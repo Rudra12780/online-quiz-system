@@ -1,0 +1,419 @@
+﻿	<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>history Quiz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+body {
+  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 0;
+  background-color: #E8D5B7     ;
+  background-size: 100% 100%; /* Changed from cover to full width & height */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #000;
+}
+
+#home-icon {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  padding: 12px 20px; /* bigger size */
+  background-color: transparent;
+  /* border: 2px solid white;  <-- removed */
+  color: white;
+  font-size: 24px; /* bigger icon */
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+#home-icon i {
+  color: black;
+  transition: color 0.3s ease;
+}
+
+#home-icon:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: white;
+  text-decoration: none;
+}
+
+
+#home-icon:hover i {
+  color: black;
+}
+/* NEW: Submit button styles */
+#submit-btn {
+  padding: 12px 20px; /* match home icon */
+  font-size: 24px; /* same size */
+  font-weight: bold;
+  background-color: transparent;
+  border: none; /* no border */
+  color: black;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+}
+
+#submit-btn:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: black;
+  text-decoration: none;
+}
+
+
+    #timer {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #f2f2f2;
+      padding: 10px 15px;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    .quiz-navigation {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      width: 220px;
+      background-image: url("quiz background/historybar.jpg");  
+      background-size: cover;
+      background-repeat: no-repeat;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 5;
+      color: white;
+    }
+
+    .navigation-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+.navigation-buttons .button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background-color: transparent;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: color 0.3s, transform 0.2s;
+      color: #faf7f7; /*change button color*/
+      backdrop-filter: none
+    }
+
+    .navigation-buttons .button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+      -webkit-text-fill-color: none;
+      background-image: url("file:///C:/Users/KRISHNA/Desktop/quiz/quiz%20background/.jpeg");
+      background-size: cover;
+      background-position: center;
+    }
+	
+
+    .finish {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+      text-align: center;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      margin: 2px 0;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+
+    li:hover {
+      background-color: #e0e0e0;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    .result {
+      font-size: 16px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #finalScore {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #submit-btn {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+	.finish {
+  cursor: pointer;
+  color: white; /* Changed to white */
+  text-decoration: underline;
+  text-align: center;
+}
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+<a id="home-icon" href="dashboard.html" title="Go to Dashboard">
+  <i class="fa fa-home" aria-hidden="true"></i>
+</a>
+
+
+
+<div id="timer">Time Left: 50:00</div>
+
+<div class="quiz-wrapper">
+  <div class="quiz-container">
+    <h1>history Quiz</h1>
+    <div id="questions-container"></div>
+    <button id="submit-btn" onclick="submitQuiz()">Submit</button>
+    <div id="finalScore"></div>
+  </div>
+
+  <div class="quiz-navigation">
+    <div class="nav-content">
+      <h3>QUIZ NAVIGATION</h3>
+      <div class="navigation-buttons" id="nav-buttons"></div>
+      <div class="finish" onclick="submitQuiz()">Finish attempting...</div>
+    </div>
+  </div>
+</div>
+
+<audio id="correctSound">
+    <source src="quiz background/correct.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="incorrectSound">
+    <source src="quiz background/incorrect.mp3" type="audio/mpeg">
+  </audio>
+
+
+<script>
+ const questions = [
+{ q: "1. Who was the first Emperor of the Maurya Dynasty?", options: ["Ashoka", "Chandragupta Maurya", "Bindusara", "Harsha"], answer: "B" },
+  { q: "2. In which year did India gain independence from British rule?", options: ["1945", "1950", "1947", "1930"], answer: "C" },
+  { q: "3. Who was the founder of the Mughal Empire in India?", options: ["Babur", "Akbar", "Shah Jahan", "Aurangzeb"], answer: "A" },
+  { q: "4. Who was the first President of independent India?", options: ["Jawaharlal Nehru", "Dr. Rajendra Prasad", "Sardar Patel", "Dr. B.R. Ambedkar"], answer: "B" },
+  { q: "5. Which famous freedom fighter gave the slogan 'Give me blood, and I shall give you freedom'?", options: ["Subhas Chandra Bose", "Mahatma Gandhi", "Bhagat Singh", "Jawaharlal Nehru"], answer: "A" },
+  { q: "6. The battle of Plassey was fought in which year?", options: ["1757", "1764", "1857", "1805"], answer: "A" },
+  { q: "7. Who was known as the 'Iron Man of India'?", options: ["Jawaharlal Nehru", "Lal Bahadur Shastri", "Sardar Vallabhbhai Patel", "Bal Gangadhar Tilak"], answer: "C" },
+  { q: "8. Who was the British Viceroy during the partition of Bengal in 1905?", options: ["Lord Mountbatten", "Lord Curzon", "Lord Dalhousie", "Lord Canning"], answer: "B" },
+  { q: "9. What was the capital of the Gupta Empire?", options: ["Pataliputra", "Delhi", "Ujjain", "Mathura"], answer: "A" },
+  { q: "10. Who wrote the book 'Discovery of India'?", options: ["Subhas Chandra Bose", "Rabindranath Tagore", "Jawaharlal Nehru", "Mahatma Gandhi"], answer: "C" },
+  { q: "11. Who led the Salt March in 1930?", options: ["Mahatma Gandhi", "Lala Lajpat Rai", "Bal Gangadhar Tilak", "Bhagat Singh"], answer: "A" },
+  { q: "12. Who was the first woman ruler of India?", options: ["Rani Lakshmibai", "Indira Gandhi", "Razia Sultana", "Chand Bibi"], answer: "C" },
+  { q: "13. Who introduced the Permanent Settlement in Bengal?", options: ["Lord Hastings", "Lord Cornwallis", "Lord Wellesley", "Lord Dalhousie"], answer: "B" },
+  { q: "14. When did the Quit India Movement begin?", options: ["1920", "1942", "1930", "1939"], answer: "B" },
+  { q: "15. Who was the last Governor-General of independent India?", options: ["Lord Mountbatten", "C. Rajagopalachari", "Lord Wavell", "Dr. Rajendra Prasad"], answer: "B" },
+  { q: "16. The Indus Valley Civilization was discovered in which year?", options: ["1901", "1920", "1922", "1935"], answer: "C" },
+  { q: "17. Who built the Red Fort in Delhi?", options: ["Akbar", "Shah Jahan", "Babur", "Jahangir"], answer: "B" },
+  { q: "18. The 'Dandi March' was associated with which movement?", options: ["Quit India Movement", "Non-Cooperation Movement", "Civil Disobedience Movement", "Khilafat Movement"], answer: "C" },
+  { q: "19. Who coined the term 'Swaraj is my birthright'?", options: ["Jawaharlal Nehru", "Bal Gangadhar Tilak", "Gopal Krishna Gokhale", "Mahatma Gandhi"], answer: "B" },
+  { q: "20. In which year was the First Battle of Panipat fought?", options: ["1526", "1556", "1761", "1540"], answer: "A" }
+];
+
+
+  const correctAnswers = {};
+  const userAnswers = {};
+  const container = document.getElementById("questions-container");
+  const navButtons = document.getElementById("nav-buttons");
+
+  questions.forEach((q, index) => {
+    const qId = `question${index + 1}`;
+    correctAnswers[qId] = q.answer;
+
+    const questionDiv = document.createElement("div");
+    questionDiv.className = "question";
+    questionDiv.id = qId;
+
+    const questionText = document.createElement("p");
+    questionText.textContent = q.q;
+    questionDiv.appendChild(questionText);
+
+    const ul = document.createElement("ul");
+
+    ["A", "B", "C", "D"].forEach((label, i) => {
+      const li = document.createElement("li");
+      li.textContent = `${label}. ${q.options[i]}`;
+      li.setAttribute("onclick", `checkAnswer(this, '${label}', '${qId}')`);
+      ul.appendChild(li);
+    });
+
+    questionDiv.appendChild(ul);
+    questionDiv.innerHTML += `<div class="result" id="result-${qId}"></div>`;
+    container.appendChild(questionDiv);
+
+    const navBtn = document.createElement("div");
+    navBtn.className = "button";
+    navBtn.textContent = `${index + 1}`;  // show only numbers here
+    navBtn.onclick = () => {
+      document.getElementById(qId).scrollIntoView({ behavior: 'smooth' });
+    };
+    navButtons.appendChild(navBtn);
+  });
+
+  function checkAnswer(selectedOption, answer, questionId) {
+    if (userAnswers[questionId] !== undefined) return;
+
+    const correctAnswer = correctAnswers[questionId];
+    const resultDiv = document.getElementById(`result-${questionId}`);
+    const options = document.querySelectorAll(`#${questionId} li`);
+
+    options.forEach(option => option.style.pointerEvents = 'none');
+
+    if (answer === correctAnswer) {
+      selectedOption.classList.add("correct");
+      resultDiv.textContent = "Correct!";
+      document.getElementById("correctSound").play();
+      userAnswers[questionId] = true;
+    } else {
+      selectedOption.classList.add("incorrect");
+      resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+      userAnswers[questionId] = false;
+    }
+
+    // Mark nav button as answered
+    markNavButtonAnswered(questionId);
+  }
+
+  function markNavButtonAnswered(questionId) {
+    const questionNumber = parseInt(questionId.replace('question', ''));
+    const buttons = document.querySelectorAll('.navigation-buttons .button');
+    if (buttons[questionNumber - 1]) {
+      buttons[questionNumber - 1].style.backgroundColor = '#E6E4D0';
+      buttons[questionNumber - 1].style.color = 'white';
+    }
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    const total = questions.length;
+
+    for (let i = 1; i <= total; i++) {
+      const qId = `question${i}`;
+      if (userAnswers[qId]) score++;
+    }
+
+    document.getElementById("finalScore").innerHTML = `You scored ${score} out of ${total}`;
+
+    // Optional: Disable all remaining unanswered questions
+    for (let i = 1; i <= total; i++) {
+      const qId = `question${i}`;
+      const options = document.querySelectorAll(`#${qId} li`);
+      options.forEach(option => option.style.pointerEvents = 'none');
+    }
+
+    // Redirect or show pass/fail if needed
+    if (score < 10) {
+      alert("You scored below average. Redirecting to easy level...");
+      window.location.href = "easyes.html";
+    } else if (score === 10) {
+      alert("You scored average. Redirecting to medium level...");
+      window.location.href = "meduimes.html";
+    } else {
+      alert("Congratulations! Redirecting to hard level...");
+      window.location.href = "hardes.html";
+    }
+  }
+  // Your existing questions array and other variables...
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+      const correctSound = document.getElementById("correctSound");
+      const incorrectSound = document.getElementById("incorrectSound");
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        correctSound.play(); // Play correct answer sound
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        incorrectSound.play(); // Play incorrect answer sound
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+
+   
+</script>
+
+</body>
+</html>

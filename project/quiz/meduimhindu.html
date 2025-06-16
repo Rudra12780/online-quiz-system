@@ -1,0 +1,436 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>hindu temlpe Quiz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 0;
+  background-color: #FFCC99  ;
+  background-size: 100% 100%; /* Changed from cover to full width & height */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #000;
+}
+#home-icon {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  padding: 12px 20px; /* bigger size */
+  background-color: transparent;
+  /* border: 2px solid white;  <-- removed */
+  color: white;
+  font-size: 24px; /* bigger icon */
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+#home-icon i {
+  color: black;
+  transition: color 0.3s ease;
+}
+
+#home-icon:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: white;
+  text-decoration: none;
+}
+
+
+#home-icon:hover i {
+  color: black;
+}
+
+/* NEW: Submit button styles */
+#submit-btn {
+  padding: 12px 20px; /* match home icon */
+  font-size: 24px; /* same size */
+  font-weight: bold;
+  background-color: transparent;
+  border: none; /* no border */
+  color: black;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+}
+
+#submit-btn:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: black;
+  text-decoration: none;
+}
+
+
+    #timer {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #f2f2f2;
+      padding: 10px 15px;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    .quiz-navigation {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      width: 300px;
+      background-image: url("quiz background/hindum.jpg");  
+      background-size: cover;
+      background-repeat: no-repeat;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 5;
+      color: #000;
+    }
+
+    .navigation-buttons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 buttons per row */
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.navigation-buttons .button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background-color: transparent;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: color 0.3s, transform 0.2s;
+     color: #faf7f7; /*change button color*/
+      backdrop-filter: none;
+    }
+
+    .navigation-buttons .button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+      -webkit-text-fill-color: none;
+      background-image: url("file:///C:/Users/KRISHNA/Desktop/quiz/quiz%20background/.jpeg");
+      background-size: cover;
+      background-position: center;
+    }
+	
+
+    .finish {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+      text-align: center;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      margin: 2px 0;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+
+    li:hover {
+      background-color: #e0e0e0;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    .result {
+      font-size: 16px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #finalScore {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #submit-btn {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+	.finish {
+  cursor: pointer;
+  color: black; /* Changed to submit button color */
+  text-decoration: underline;
+  text-align: center;
+}
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+<a id="home-icon" href="dashboard.html" title="Go to Dashboard">
+  <i class="fa fa-home" aria-hidden="true"></i>
+</a>
+  <div id="timer">Time Left: 50:00</div>
+
+  <div class="quiz-navigation">
+    <h3 style="text-align:center">QUIZ NAVIGATION</h3>
+    <div class="navigation-buttons" id="navButtons"></div>
+    <div class="finish" onclick="finishQuiz()">Finish attempting...</div>
+  </div>
+
+  <div class="quiz-container">
+    <h1>hindu temlpe Quiz</h1>
+    <div id="questions-container"></div>
+    <button id="submit-btn" onclick="calculateScore()">Submit</button>
+    <div id="finalScore"></div>
+  </div>
+
+  <audio id="correctSound">
+    <source src="quiz background/correct.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="incorrectSound">
+    <source src="quiz background/incorrect.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+      const questions = [
+  { q: "1. Which temple is known as the ‘Golden Temple’?", options: ["Kashi Vishwanath Temple", "Sree Padmanabhaswamy Temple", "Golden Temple Amritsar", "Meenakshi Temple"], answer: "C" },
+  { q: "2. The famous Brihadeeswarar Temple is located in which state?", options: ["Tamil Nadu", "Kerala", "Karnataka", "Andhra Pradesh"], answer: "A" },
+  { q: "3. Which temple is dedicated to Lord Venkateswara?", options: ["Vaishno Devi Temple", "Tirumala Tirupati", "Somnath Temple", "Kedarnath Temple"], answer: "B" },
+  { q: "4. The famous Kailasa Temple is located in which place?", options: ["Ellora", "Khajuraho", "Ajanta", "Puri"], answer: "A" },
+  { q: "5. Which temple is known for its annual Rath Yatra festival?", options: ["Jagannath Temple", "Dwarkadhish Temple", "Kashi Vishwanath Temple", "Somnath Temple"], answer: "A" },
+  { q: "6. Which temple is considered one of the 12 Jyotirlingas?", options: ["Somanath", "Badrinath", "Ramanathaswamy", "Mahakaleshwar"], answer: "A" },
+  { q: "7. In which state is the famous Shirdi Sai Baba Temple located?", options: ["Maharashtra", "Uttar Pradesh", "Karnataka", "Andhra Pradesh"], answer: "A" },
+  { q: "8. Which temple is famous for its Meenakshi Amman?", options: ["Kedarnath Temple", "Meenakshi Temple", "Sree Padmanabhaswamy Temple", "Rameswaram Temple"], answer: "B" },
+  { q: "9. Which temple is located in the Himalayan region dedicated to Lord Kedarnath?", options: ["Badrinath", "Kedarnath", "Rishikesh", "Nainital"], answer: "B" },
+  { q: "10. The Konark Sun Temple is situated in which state?", options: ["Andhra Pradesh", "Odisha", "Tamil Nadu", "Uttarakhand"], answer: "B" },
+  { q: "11. The famous Somnath Temple is located in which state?", options: ["Madhya Pradesh", "Gujarat", "Rajasthan", "Maharashtra"], answer: "B" },
+  { q: "12. Which temple is known for its intricate architecture in the form of a pyramid?", options: ["Brihadeeswarar Temple", "Angkor Wat", "Sanchi Stupa", "Khajuraho Temple"], answer: "A" },
+  { q: "13. The Ram Janmabhoomi Mandir is dedicated to which deity?", options: ["Lord Shiva", "Lord Vishnu", "Lord Ram", "Lord Krishna"], answer: "C" },
+  { q: "14. The famous Rameswaram Temple is located in which state?", options: ["Tamil Nadu", "Karnataka", "Uttar Pradesh", "Madhya Pradesh"], answer: "A" },
+  { q: "15. The Sree Padmanabhaswamy Temple is located in which city?", options: ["Mumbai", "Thiruvananthapuram", "Hyderabad", "Bangalore"], answer: "B" },
+  { q: "16. The Akshardham Temple is located in which city?", options: ["Kolkata", "Mumbai", "Delhi", "Bangalore"], answer: "C" },
+  { q: "17. Which temple is famous for its architecture featuring large pillars and large gateways?", options: ["Meenakshi Temple", "Virupaksha Temple", "Kashi Vishwanath Temple", "Chidambaram Temple"], answer: "B" },
+  { q: "18. Which temple is known as the ‘Temple of Living Goddess’?", options: ["Pashupatinath", "Kashi Vishwanath", "Kumari Temple", "Vaishno Devi"], answer: "C" },
+  { q: "19. The famous Lingaraj Temple is located in which state?", options: ["Odisha", "Bihar", "Madhya Pradesh", "Gujarat"], answer: "A" },
+  { q: "20. Which temple is situated on an island and is dedicated to Lord Ganesha?", options: ["Murud Janjira", "Elephanta Caves", "Mahalaxmi Temple", "Lord Venkateswara Temple"], answer: "B" },
+  { q: "21. The famous Chidambaram Temple is dedicated to which deity?", options: ["Lord Vishnu", "Lord Shiva", "Lord Brahma", "Lord Hanuman"], answer: "B" },
+  { q: "22. The famous Dakshineswar Kali Temple is situated in which state?", options: ["West Bengal", "Uttarakhand", "Himachal Pradesh", "Madhya Pradesh"], answer: "A" },
+  { q: "23. Which temple is located in the city of Varanasi and dedicated to Lord Shiva?", options: ["Kashi Vishwanath Temple", "Somnath Temple", "Srirangam Temple", "Ramanathaswamy Temple"], answer: "A" },
+  { q: "24. Which temple is known for its golden dome?", options: ["Golden Temple", "Badrinath Temple", "Meenakshi Temple", "Sree Padmanabhaswamy Temple"], answer: "A" },
+  { q: "25. The Jagannath Temple is located in which city?", options: ["Puri", "Bhubaneswar", "Cuttack", "Kolkata"], answer: "A" },
+  { q: "26. The famous Sanchi Stupa is located in which state?", options: ["Madhya Pradesh", "Bihar", "Rajasthan", "Uttarakhand"], answer: "A" },
+  { q: "27. The Virupaksha Temple is located in which city?", options: ["Pune", "Hampi", "Kolkata", "Hyderabad"], answer: "B" },
+  { q: "28. Which temple is dedicated to the Goddess of Learning, Saraswati?", options: ["Kartikeya Temple", "Saraswati Temple", "Lakshmi Temple", "Durga Temple"], answer: "B" },
+  { q: "29. The famous temple of Mahakaleshwar is located in which city?", options: ["Ujjain", "Varanasi", "Ayodhya", "Indore"], answer: "A" },
+  { q: "30. The famous Lord Shiva temple at Amarnath is located in which state?", options: ["Himachal Pradesh", "Jammu and Kashmir", "Uttarakhand", "Punjab"], answer: "B" },
+  { q: "31. Which temple is considered as one of the holiest temples of Sikhism?", options: ["Golden Temple", "Mata Vaishno Devi Temple", "Kashi Vishwanath Temple", "Somnath Temple"], answer: "A" },
+  { q: "32. The famous temple of Lord Jagannath is located in which state?", options: ["Bihar", "Odisha", "Gujarat", "Tamil Nadu"], answer: "B" },
+  { q: "33. The famous Dwarkadhish Temple is located in which state?", options: ["Gujarat", "Maharashtra", "Tamil Nadu", "Kerala"], answer: "A" },
+  { q: "34. The famous Kedarnath Temple is located in which state?", options: ["Uttarakhand", "Himachal Pradesh", "Uttar Pradesh", "Rajasthan"], answer: "A" },
+  { q: "35. Which temple is dedicated to Lord Ayyappa?", options: ["Sabarimala Temple", "Padmanabhaswamy Temple", "Rameswaram Temple", "Chidambaram Temple"], answer: "A" },
+  { q: "36. The famous Badrinath Temple is located in which state?", options: ["Uttarakhand", "Himachal Pradesh", "Uttar Pradesh", "Kashmir"], answer: "A" },
+  { q: "37. Which temple is dedicated to Lord Vishnu and is located in Tamil Nadu?", options: ["Ramanathaswamy Temple", "Ranganathaswamy Temple", "Meenakshi Temple", "Tirupati Temple"], answer: "B" },
+  { q: "38. Which temple is dedicated to Goddess Durga?", options: ["Kali Temple", "Vaishno Devi Temple", "Maa Durga Temple", "Kamakhya Temple"], answer: "D" },
+  { q: "39. The Virupaksha Temple is located in which famous historical city?", options: ["Hampi", "Ayodhya", "Varanasi", "Mathura"], answer: "A" },
+  { q: "40. Which temple is dedicated to Lord Shiva and is located in the Nilgiri hills?", options: ["Sabarimala", "Kedarnath", "Ramanathaswamy", "Tiruvannamalai"], answer: "D" }
+  ];
+
+
+
+    const correctAnswers = {};
+    const userAnswers = {};
+    const container = document.getElementById("questions-container");
+    const navButtonsDiv = document.getElementById("navButtons");
+
+    questions.forEach((q, index) => {
+      const qId = `question${index + 1}`;
+      correctAnswers[qId] = q.answer;
+
+      const btn = document.createElement("div");
+      btn.className = "button";
+      btn.id = `nav-${qId}`;
+      btn.textContent = index + 1;
+      btn.onclick = () => {
+        document.getElementById(qId).scrollIntoView({ behavior: 'smooth' });
+      };
+      navButtonsDiv.appendChild(btn);
+
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question";
+      questionDiv.id = qId;
+
+      const questionText = document.createElement("p");
+      questionText.textContent = q.q;
+      questionDiv.appendChild(questionText);
+
+      const ul = document.createElement("ul");
+      ["A", "B", "C", "D"].forEach((label, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${label}. ${q.options[i]}`;
+        li.setAttribute("onclick", `checkAnswer(this, '${label}', '${qId}')`);
+        ul.appendChild(li);
+      });
+
+      questionDiv.appendChild(ul);
+      questionDiv.innerHTML += `<div class="result" id="result-${qId}"></div>`;
+      container.appendChild(questionDiv);
+    });
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        document.getElementById("correctSound").play();
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+
+    function calculateScore() {
+  let score = 0;
+  for (let key in correctAnswers) {
+    if (userAnswers[key] === true) score++;
+  }
+
+  const total = Object.keys(correctAnswers).length;
+  const finalScoreDiv = document.getElementById("finalScore");
+
+  if (score >= 14) {
+    finalScoreDiv.textContent = `You scored ${score}/${total}. Congratulations! 🎉`;
+    finalScoreDiv.style.color = "green";
+  } else {
+    finalScoreDiv.textContent = `You scored ${score}/${total}. Try again! 😢`;
+    finalScoreDiv.style.color = "red";
+  }
+
+  // Add this part to redirect after 2 seconds
+  setTimeout(() => {
+    window.location.href = "dashboard.html";
+  }, 5000);
+}
+
+    function finishQuiz() {
+      if (confirm("Are you sure you want to submit the quiz?")) {
+        calculateScore();
+      }
+    }
+
+    // Timer logic
+    let totalTime = 50 * 60;
+    const timerDisplay = document.getElementById("timer");
+
+    function updateTimer() {
+      const minutes = Math.floor(totalTime / 60);
+      const seconds = totalTime % 60;
+      timerDisplay.textContent = `Time Left: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      if (totalTime > 0) {
+        totalTime--;
+      } else {
+        clearInterval(timerInterval);
+        calculateScore();
+        alert("Time's up! Your quiz is being submitted.");
+      }
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+	 // Your existing questions array and other variables...
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+      const correctSound = document.getElementById("correctSound");
+      const incorrectSound = document.getElementById("incorrectSound");
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        correctSound.play(); // Play correct answer sound
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        incorrectSound.play(); // Play incorrect answer sound
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+  </script>
+</body>
+</html>

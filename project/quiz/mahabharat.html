@@ -1,0 +1,434 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mahabharat Quiz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+body {
+  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 0;
+  background-color: #E8D9C5 	;
+  background-size: 100% 100%; /* Changed from cover to full width & height */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #000;
+}
+
+#home-icon {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  padding: 12px 20px; /* bigger size */
+  background-color: transparent;
+  /* border: 2px solid white;  <-- removed */
+  color: white;
+  font-size: 24px; /* bigger icon */
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+#home-icon i {
+  color: black;
+  transition: color 0.3s ease;
+}
+
+#home-icon:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: white;
+  text-decoration: none;
+}
+
+
+#home-icon:hover i {
+  color: black;
+}
+/* NEW: Submit button styles */
+#submit-btn {
+  padding: 12px 20px; /* match home icon */
+  font-size: 24px; /* same size */
+  font-weight: bold;
+  background-color: transparent;
+  border: none; /* no border */
+  color: black;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+}
+
+#submit-btn:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: black;
+  text-decoration: none;
+}
+
+
+    #timer {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #f2f2f2;
+      padding: 10px 15px;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    .quiz-navigation {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      width: 220px;
+      background-image: url("quiz background/mahe.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 5;
+      color: #000;
+    }
+
+    .navigation-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+.navigation-buttons .button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background-color: transparent;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: color 0.3s, transform 0.2s;
+      color: #faf7f7; /*change button color*/
+      backdrop-filter: none
+    }
+
+    .navigation-buttons .button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+      -webkit-text-fill-color: none;
+      background-image: url("file:///C:/Users/KRISHNA/Desktop/quiz/quiz%20background/.jpeg");
+      background-size: cover;
+      background-position: center;
+    }
+	
+
+    .finish {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+      text-align: center;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      margin: 2px 0;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+
+    li:hover {
+      background-color: #e0e0e0;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    .result {
+      font-size: 16px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #finalScore {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #submit-btn {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+	.finish {
+  cursor: pointer;
+  color: white; /* Changed to white */
+  text-decoration: underline;
+  text-align: center;
+}
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+<a id="home-icon" href="dashboard.html" title="Go to Dashboard">
+  <i class="fa fa-home" aria-hidden="true"></i>
+</a>
+
+
+
+<div id="timer">Time Left: 50:00</div>
+
+<div class="quiz-wrapper">
+  <div class="quiz-container">
+    <h1>Mahabharat Quiz</h1>
+    <div id="questions-container"></div>
+    <button id="submit-btn" onclick="submitQuiz()">Submit</button>
+    <div id="finalScore"></div>
+  </div>
+
+  <div class="quiz-navigation">
+    <div class="nav-content">
+      <h3>QUIZ NAVIGATION</h3>
+      <div class="navigation-buttons" id="nav-buttons"></div>
+      <div class="finish" onclick="submitQuiz()">Finish attempting...</div>
+    </div>
+  </div>
+</div>
+
+<audio id="correctSound">
+    <source src="quiz background/correct.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="incorrectSound">
+    <source src="quiz background/incorrect.mp3" type="audio/mpeg">
+  </audio>
+
+<script>
+ const questions = [
+  { q: "1. Who was the eldest of the Pandavas?", options: ["Arjuna", "Yudhishthira", "Bhima", "Nakula"], answer: "B" },
+  { q: "2. What was the name of Arjuna's bow?", options: ["Gandiva", "Pinaka", "Sharanga", "Vijaya"], answer: "A" },
+  { q: "3. Who narrated the Mahabharata to King Janamejaya?", options: ["Vyasa", "Vishnu", "Vaishampayana", "Parashara"], answer: "C" },
+  { q: "4. Who was Karna’s real mother?", options: ["Draupadi", "Kunti", "Radha", "Ganga"], answer: "B" },
+  { q: "5. Who was the teacher of both Pandavas and Kauravas?", options: ["Parashurama", "Bhishma", "Drona", "Kripacharya"], answer: "C" },
+  { q: "6. Which Kaurava tried to disrobe Draupadi in court?", options: ["Dushasana", "Duryodhana", "Shakuni", "Ashwatthama"], answer: "A" },
+  { q: "7. How many sons did Draupadi have from the Pandavas?", options: ["3", "5", "4", "6"], answer: "B" },
+  { q: "8. What was the capital of the Kauravas?", options: ["Indraprastha", "Kurukshetra", "Hastinapur", "Dwaraka"], answer: "C" },
+  { q: "9. Who broke the rules of war to kill Abhimanyu?", options: ["Drona", "Karna", "Duryodhana", "All of the above"], answer: "D" },
+  { q: "10. Who survived the Kurukshetra war from the Kaurava side?", options: ["Shakuni", "Ashwatthama", "Karna", "Dushasana"], answer: "B" },
+  { q: "11. Who drove Arjuna's chariot in the war?", options: ["Karna", "Krishna", "Bhishma", "Yudhishthira"], answer: "B" },
+  { q: "12. What vow did Bhishma take?", options: ["Fasting", "Meditation", "Celibacy", "Silence"], answer: "C" },
+  { q: "13. Who became commander-in-chief of the Pandava army after Drona?", options: ["Shikhandi", "Yudhishthira", "Krishna", "Dhrishtadyumna"], answer: "D" },
+  { q: "14. Who was born from fire along with Draupadi?", options: ["Kripa", "Ashwatthama", "Shikhandi", "Dhrishtadyumna"], answer: "D" },
+  { q: "15. Which Pandava is known for immense strength?", options: ["Arjuna", "Bhima", "Sahadeva", "Nakula"], answer: "B" },
+  { q: "16. Who advised Pandavas to live in disguise for the 13th year?", options: ["Bhishma", "Vyasa", "Narada", "Krishna"], answer: "B" },
+  { q: "17. Who killed Duryodhana in battle?", options: ["Arjuna", "Bhima", "Nakula", "Dhrishtadyumna"], answer: "B" },
+  { q: "18. What was Shakuni’s relation to Duryodhana?", options: ["Brother", "Uncle", "Friend", "Guru"], answer: "B" },
+  { q: "19. Which demon did Bhima kill in the forest?", options: ["Putana", "Hidimba", "Bakāsura", "Vritra"], answer: "C" },
+  { q: "20. Who wrote the Mahabharata?", options: ["Valmiki", "Vishnu", "Vyasa", "Narada"], answer: "C" }
+];
+
+
+  const correctAnswers = {};
+  const userAnswers = {};
+  const container = document.getElementById("questions-container");
+  const navButtons = document.getElementById("nav-buttons");
+
+  questions.forEach((q, index) => {
+    const qId = `question${index + 1}`;
+    correctAnswers[qId] = q.answer;
+
+    const questionDiv = document.createElement("div");
+    questionDiv.className = "question";
+    questionDiv.id = qId;
+
+    const questionText = document.createElement("p");
+    questionText.textContent = q.q;
+    questionDiv.appendChild(questionText);
+
+    const ul = document.createElement("ul");
+
+    ["A", "B", "C", "D"].forEach((label, i) => {
+      const li = document.createElement("li");
+      li.textContent = `${label}. ${q.options[i]}`;
+      li.setAttribute("onclick", `checkAnswer(this, '${label}', '${qId}')`);
+      ul.appendChild(li);
+    });
+
+    questionDiv.appendChild(ul);
+    questionDiv.innerHTML += `<div class="result" id="result-${qId}"></div>`;
+    container.appendChild(questionDiv);
+
+    const navBtn = document.createElement("div");
+    navBtn.className = "button";
+    navBtn.textContent = `${index + 1}`;  // show only numbers here
+    navBtn.onclick = () => {
+      document.getElementById(qId).scrollIntoView({ behavior: 'smooth' });
+    };
+    navButtons.appendChild(navBtn);
+  });
+
+  function checkAnswer(selectedOption, answer, questionId) {
+    if (userAnswers[questionId] !== undefined) return;
+
+    const correctAnswer = correctAnswers[questionId];
+    const resultDiv = document.getElementById(`result-${questionId}`);
+    const options = document.querySelectorAll(`#${questionId} li`);
+
+    options.forEach(option => option.style.pointerEvents = 'none');
+
+    if (answer === correctAnswer) {
+      selectedOption.classList.add("correct");
+      resultDiv.textContent = "Correct!";
+      document.getElementById("correctSound").play();
+      userAnswers[questionId] = true;
+    } else {
+      selectedOption.classList.add("incorrect");
+      resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+      userAnswers[questionId] = false;
+    }
+
+    // Mark nav button as answered
+    markNavButtonAnswered(questionId);
+  }
+
+  function markNavButtonAnswered(questionId) {
+  const questionNumber = parseInt(questionId.replace('question', ''));
+  const buttons = document.querySelectorAll('.navigation-buttons .button');
+  if (buttons[questionNumber - 1]) {
+    buttons[questionNumber - 1].style.backgroundColor = '#E6E4D0';  // Changed color here
+    buttons[questionNumber - 1].style.color = '#000';              // Adjust text color for contrast
+  }
+}
+
+
+  function submitQuiz() {
+    const total = Object.keys(correctAnswers).length;
+    if (Object.keys(userAnswers).length < total) {
+      alert("Please answer all questions before submitting.");
+      return;
+    }
+
+    let score = 0;
+    for (let key in correctAnswers) {
+      if (userAnswers[key] === true) score++;
+    }
+
+    const finalScoreDiv = document.getElementById("finalScore");
+    if (score >= 14) {
+      finalScoreDiv.textContent = `You scored ${score}/${total}. Congratulations. `;
+      finalScoreDiv.style.color = "green";
+    } else {
+      finalScoreDiv.textContent = `You scored ${score}/${total}. Try again! `;
+      finalScoreDiv.style.color = "red";
+    }
+
+setTimeout(() => {
+      if (score >= 16) {
+        window.location.href = "hardmahabharat.html";
+      } else if (score >= 10) {
+        window.location.href = "meduimmahabharat.html";
+      } else {
+        window.location.href = "easymahabharat.html";
+      }
+    }, 4000);
+  }
+  
+
+  let totalTime = 50 * 60;
+  const timerEl = document.getElementById("timer");
+  const timer = setInterval(() => {
+    const minutes = Math.floor(totalTime / 60);
+    const seconds = totalTime % 60;
+    timerEl.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+    totalTime--;
+
+    if (totalTime < 0) {
+      clearInterval(timer);
+      submitQuiz();
+      alert("Time's up! Quiz submitted automatically.");
+    }
+  }, 1000);
+  // Your existing questions array and other variables...
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+      const correctSound = document.getElementById("correctSound");
+      const incorrectSound = document.getElementById("incorrectSound");
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        correctSound.play(); // Play correct answer sound
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        incorrectSound.play(); // Play incorrect answer sound
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+</script>
+
+</body>
+</html>

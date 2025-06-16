@@ -1,0 +1,433 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Marvel Quiz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+   <style>
+    body {
+  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 0;
+  background-color:#F0F0F0   ;
+  background-size: 100% 135%; /* Changed from cover to full width & height */100
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #000;
+}
+#home-icon {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  padding: 12px 20px; /* bigger size */
+  background-color: transparent;
+  /* border: 2px solid white;  <-- removed */
+  color: white;
+  font-size: 24px; /* bigger icon */
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+#home-icon i {
+  color: black;
+  transition: color 0.3s ease;
+}
+
+#home-icon:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: white;
+  text-decoration: none;
+}
+
+
+#home-icon:hover i {
+  color: black;
+}
+
+/* NEW: Submit button styles */
+#submit-btn {
+  padding: 12px 20px; /* match home icon */
+  font-size: 24px; /* same size */
+  font-weight: bold;
+  background-color: transparent;
+  border: none; /* no border */
+  color: black;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+}
+
+#submit-btn:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: black;
+  text-decoration: none;
+}
+
+
+    #timer {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #f2f2f2;
+      padding: 10px 15px;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    .quiz-navigation {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      width: 300px;
+      background-image: url("quiz background/marvelm.jpg"); 
+      background-size: cover;
+      background-repeat: no-repeat;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 5;
+      color: #000;
+    }
+
+    .navigation-buttons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 buttons per row */
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.navigation-buttons .button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background-color: transparent;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: color 0.3s, transform 0.2s;
+     color: #faf7f7; /*change button color*/
+      backdrop-filter: none;
+    }
+
+    .navigation-buttons .button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+      -webkit-text-fill-color: none;
+      background-image: url("file:///C:/Users/KRISHNA/Desktop/quiz/quiz%20background/.jpeg");
+      background-size: cover;
+      background-position: center;
+    }
+	
+
+    .finish {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+      text-align: center;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      margin: 2px 0;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+
+    li:hover {
+      background-color: #e0e0e0;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    .result {
+      font-size: 16px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #finalScore {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #submit-btn {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+	.finish {
+  cursor: pointer;
+  color: black; /* Changed to submit button color */
+  text-decoration: underline;
+  text-align: center;
+}
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+<a id="home-icon" href="dashboard.html" title="Go to Dashboard">
+  <i class="fa fa-home" aria-hidden="true"></i>
+</a>
+  <div id="timer">Time Left: 50:00</div>
+
+  <div class="quiz-navigation">
+    <h3 style="text-align:center">QUIZ NAVIGATION</h3>
+    <div class="navigation-buttons" id="navButtons"></div>
+    <div class="finish" onclick="finishQuiz()">Finish attempting...</div>
+  </div>
+
+  <div class="quiz-container">
+    <h1>Marvel Quiz</h1>
+    <div id="questions-container"></div>
+    <button id="submit-btn" onclick="calculateScore()">Submit</button>
+    <div id="finalScore"></div>
+  </div>
+
+  <audio id="correctSound">
+    <source src="quiz background/correct.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="incorrectSound">
+    <source src="quiz background/incorrect.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+     const questions = [
+      { q: "1. Who is the main villain in 'Avengers: Age of Ultron'?", options: ["Ultron", "Loki", "Thanos", "Red Skull"], answer: "A" },
+      { q: "2. What is the name of Thor’s axe?", options: ["Mjolnir", "Gungnir", "Stormbreaker", "Asgard"], answer: "C" },
+      { q: "3. What is the name of Peter Parker’s best friend?", options: ["Harry Osborn", "Ned Leeds", "Flash Thompson", "Eddie Brock"], answer: "B" },
+      { q: "4. Who directed the first Iron Man movie?", options: ["Joss Whedon", "Jon Favreau", "James Gunn", "Taika Waititi"], answer: "B" },
+      { q: "5. What alien race invaded Earth in 'The Avengers'?", options: ["Chitauri", "Kree", "Skrull", "Nova"], answer: "A" },
+      { q: "6. What is the name of Tony Stark’s daughter?", options: ["Morgan", "Pepper", "May", "Karen"], answer: "A" },
+      { q: "7. Who is Gamora’s sister?", options: ["Nebula", "Wanda", "Shuri", "Maria"], answer: "A" },
+      { q: "8. What’s the name of Black Panther’s sister?", options: ["Okoye", "Shuri", "Nakia", "Ramonda"], answer: "B" },
+      { q: "9. What’s the name of the prison the Guardians escape from?", options: ["The Vault", "The Raft", "Kyln", "Xandar"], answer: "C" },
+      { q: "10. What does SHIELD stand for?", options: ["Strategic Homeland Intervention, Enforcement and Logistics Division", "Supreme Headquarters International Espionage Law Division", "Secret Human Intelligence Enforcement Logistics Department", "Strategic Hero Intelligence and Espionage Logistics Division"], answer: "A" },
+      { q: "11. What’s Iron Man’s AI system called after JARVIS?", options: ["ULTRON", "FRIDAY", "KAREN", "E.D.I.T.H."], answer: "B" },
+      { q: "12. What Infinity Stone is in the Tesseract?", options: ["Mind", "Space", "Power", "Reality"], answer: "B" },
+      { q: "13. Who rescued Tony Stark and Nebula in space?", options: ["Thor", "Captain Marvel", "Rocket", "Hulk"], answer: "B" },
+      { q: "14. Who is the villain in 'Black Panther'?", options: ["Ulysses Klaue", "Erik Killmonger", "Thanos", "Red Skull"], answer: "B" },
+      { q: "15. Who broke the time travel rules in Endgame?", options: ["Steve Rogers", "Tony Stark", "Bruce Banner", "Scott Lang"], answer: "A" },
+      { q: "16. Who became the new Captain America?", options: ["Bucky Barnes", "Sam Wilson", "Rhodey", "Clint Barton"], answer: "B" },
+      { q: "17. What’s Wanda’s brother’s name?", options: ["Loki", "Pietro", "Steve", "Tony"], answer: "B" },
+      { q: "18. Who blinded Nick Fury in one eye?", options: ["A Skrull", "A Kree", "His cat Goose", "Hawkeye"], answer: "C" },
+      { q: "19. What’s Spider-Man’s suit AI called?", options: ["KAREN", "JARVIS", "FRIDAY", "E.D.I.T.H."], answer: "A" },
+      { q: "20. Who is the leader of S.W.O.R.D. in 'WandaVision'?", options: ["Tyler Hayward", "Jimmy Woo", "Monica Rambeau", "Darcy Lewis"], answer: "A" },
+      { q: "21. What metal is Ultron’s final body made from?", options: ["Titanium", "Vibranium", "Adamantium", "Steel"], answer: "B" },
+      { q: "22. What planet is the Soul Stone found on?", options: ["Vormir", "Xandar", "Knowhere", "Titan"], answer: "A" },
+      { q: "23. Who said 'I can do this all day'?", options: ["Iron Man", "Spider-Man", "Captain America", "Hulk"], answer: "C" },
+      { q: "24. What’s the name of Tony Stark’s AI glasses?", options: ["FRIDAY", "JARVIS", "E.D.I.T.H.", "KAREN"], answer: "C" },
+      { q: "25. What’s Hawkeye’s wife’s name?", options: ["Laura", "Kate", "Sharon", "Maria"], answer: "A" },
+      { q: "26. What’s Loki’s real father’s name?", options: ["Odin", "Laufey", "Thanos", "Heimdall"], answer: "B" },
+      { q: "27. What movie introduced Spider-Man to the MCU?", options: ["Spider-Man: Homecoming", "Avengers: Age of Ultron", "Captain America: Civil War", "Avengers: Infinity War"], answer: "C" },
+      { q: "28. What race is Ronan the Accuser from?", options: ["Kree", "Skrull", "Xandarian", "Titanian"], answer: "A" },
+      { q: "29. What’s the name of Ant-Man’s daughter?", options: ["Cassie", "Morgan", "Shuri", "Darcy"], answer: "A" },
+      { q: "30. What’s the name of Doctor Strange’s cape?", options: ["Cloak of Invisibility", "Cloak of Destiny", "Cloak of Levitation", "Magic Cape"], answer: "C" },
+      { q: "31. Where is Captain America from?", options: ["Brooklyn", "Queens", "Chicago", "Los Angeles"], answer: "A" },
+      { q: "32. What is the real name of Star-Lord?", options: ["Peter Quill", "Drax", "Rocket", "Stephen Strange"], answer: "A" },
+      { q: "33. What is the name of Black Panther’s kingdom?", options: ["Asgard", "Sokovia", "Wakanda", "Latveria"], answer: "C" },
+      { q: "34. What species is Loki’s real race?", options: ["Frost Giant", "Asgardian", "Human", "Celestial"], answer: "A" },
+      { q: "35. What item does Doctor Strange protect?", options: ["The Mind Stone", "The Time Stone", "The Soul Stone", "The Reality Stone"], answer: "B" },
+      { q: "36. What’s the name of Tony Stark’s building?", options: ["Avengers HQ", "Stark Tower", "Oscorp", "X-Mansion"], answer: "B" },
+      { q: "37. Who is the villain in 'Thor: The Dark World'?", options: ["Malekith", "Hela", "Surtur", "Loki"], answer: "A" },
+      { q: "38. What organization does Nick Fury lead?", options: ["SWORD", "HYDRA", "SHIELD", "AIM"], answer: "C" },
+      { q: "39. What is Groot’s famous phrase?", options: ["I am tree", "Groot smash", "We are Groot", "I am Groot"], answer: "D" },
+      { q: "40. Who adopted Peter Quill?", options: ["Ego", "Rocket", "Yondu", "Drax"], answer: "C" }
+    ];
+    const correctAnswers = {};
+    const userAnswers = {};
+    const container = document.getElementById("questions-container");
+    const navButtonsDiv = document.getElementById("navButtons");
+
+    questions.forEach((q, index) => {
+      const qId = `question${index + 1}`;
+      correctAnswers[qId] = q.answer;
+
+      const btn = document.createElement("div");
+      btn.className = "button";
+      btn.id = `nav-${qId}`;
+      btn.textContent = index + 1;
+      btn.onclick = () => {
+        document.getElementById(qId).scrollIntoView({ behavior: 'smooth' });
+      };
+      navButtonsDiv.appendChild(btn);
+
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question";
+      questionDiv.id = qId;
+
+      const questionText = document.createElement("p");
+      questionText.textContent = q.q;
+      questionDiv.appendChild(questionText);
+
+      const ul = document.createElement("ul");
+      ["A", "B", "C", "D"].forEach((label, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${label}. ${q.options[i]}`;
+        li.setAttribute("onclick", `checkAnswer(this, '${label}', '${qId}')`);
+        ul.appendChild(li);
+      });
+
+      questionDiv.appendChild(ul);
+      questionDiv.innerHTML += `<div class="result" id="result-${qId}"></div>`;
+      container.appendChild(questionDiv);
+    });
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        document.getElementById("correctSound").play();
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+
+    function calculateScore() {
+  let score = 0;
+  for (let key in correctAnswers) {
+    if (userAnswers[key] === true) score++;
+  }
+
+  const total = Object.keys(correctAnswers).length;
+  const finalScoreDiv = document.getElementById("finalScore");
+
+  if (score >= 14) {
+    finalScoreDiv.textContent = `You scored ${score}/${total}. Congratulations! 🎉`;
+    finalScoreDiv.style.color = "green";
+  } else {
+    finalScoreDiv.textContent = `You scored ${score}/${total}. Try again! 😢`;
+    finalScoreDiv.style.color = "red";
+  }
+
+  // Add this part to redirect after 2 seconds
+  setTimeout(() => {
+    window.location.href = "dashboard.html";
+  }, 5000);
+}
+
+    function finishQuiz() {
+      if (confirm("Are you sure you want to submit the quiz?")) {
+        calculateScore();
+      }
+    }
+
+    // Timer logic
+    let totalTime = 50 * 60;
+    const timerDisplay = document.getElementById("timer");
+
+    function updateTimer() {
+      const minutes = Math.floor(totalTime / 60);
+      const seconds = totalTime % 60;
+      timerDisplay.textContent = `Time Left: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      if (totalTime > 0) {
+        totalTime--;
+      } else {
+        clearInterval(timerInterval);
+        calculateScore();
+        alert("Time's up! Your quiz is being submitted.");
+      }
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+	// Your existing questions array and other variables...
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+      const correctSound = document.getElementById("correctSound");
+      const incorrectSound = document.getElementById("incorrectSound");
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        correctSound.play(); // Play correct answer sound
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        incorrectSound.play(); // Play incorrect answer sound
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+  </script>
+</body>
+</html>

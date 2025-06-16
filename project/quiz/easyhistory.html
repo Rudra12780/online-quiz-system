@@ -1,0 +1,437 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>History Quiz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 0;
+background-color:#D4B483  ;
+  background-size: 100% 100%; /* Changed from cover to full width & height */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #000;
+}
+#home-icon {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  padding: 12px 20px; /* bigger size */
+  background-color: transparent;
+  /* border: 2px solid white;  <-- removed */
+  color: white;
+  font-size: 24px; /* bigger icon */
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+#home-icon i {
+  color: black;
+  transition: color 0.3s ease;
+}
+
+#home-icon:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: white;
+  text-decoration: none;
+}
+
+
+#home-icon:hover i {
+  color: black;
+}
+
+/* NEW: Submit button styles */
+#submit-btn {
+  padding: 12px 20px; /* match home icon */
+  font-size: 24px; /* same size */
+  font-weight: bold;
+  background-color: transparent;
+  border: none; /* no border */
+  color: black;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+}
+
+#submit-btn:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: black;
+  text-decoration: none;
+}
+
+
+    #timer {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #f2f2f2;
+      padding: 10px 15px;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    .quiz-navigation {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      width: 300px;
+      background-image: url("quiz background/historyc.jpg");  
+      background-size: cover;
+      background-repeat: no-repeat;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 5;
+      color: white;
+    }
+
+    .navigation-buttons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 buttons per row */
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.navigation-buttons .button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background-color: transparent;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: color 0.3s, transform 0.2s;
+     color: #faf7f7; /*change button color*/
+      backdrop-filter: none;
+    }
+
+    .navigation-buttons .button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+      -webkit-text-fill-color: none;
+      background-image: url("file:///C:/Users/KRISHNA/Desktop/quiz/quiz%20background/.jpeg");
+      background-size: cover;
+      background-position: center;
+    }
+	
+
+    .finish {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+      text-align: center;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      margin: 2px 0;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+
+    li:hover {
+      background-color: #e0e0e0;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    .result {
+      font-size: 16px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #finalScore {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #submit-btn {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+	.finish {
+  cursor: pointer;
+  color: white; /* Changed to submit button color */
+  text-decoration: underline;
+  text-align: center;
+}
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+<a id="home-icon" href="dashboard.html" title="Go to Dashboard">
+  <i class="fa fa-home" aria-hidden="true"></i>
+</a>
+
+  <div id="timer">Time Left: 50:00</div>
+
+  <div class="quiz-navigation">
+    <h3 style="text-align:center">QUIZ NAVIGATION</h3>
+    <div class="navigation-buttons" id="navButtons"></div>
+    <div class="finish" onclick="finishQuiz()">Finish attempting...</div>
+  </div>
+
+  <div class="quiz-container">
+    <h1>History Quiz</h1>
+    <div id="questions-container"></div>
+    <button id="submit-btn" onclick="calculateScore()">Submit</button>
+    <div id="finalScore"></div>
+  </div>
+
+  <audio id="correctSound">
+    <source src="quiz background/correct.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="incorrectSound">
+    <source src="quiz background/incorrect.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+     
+   const questions = [
+  { q: "1. Who was the first President of India?", options: ["Dr. Rajendra Prasad", "Jawaharlal Nehru", "APJ Abdul Kalam", "Mahatma Gandhi"], answer: "A" },
+  { q: "2. When did India gain independence?", options: ["1942", "1947", "1950", "1930"], answer: "B" },
+  { q: "3. Who discovered America?", options: ["Vasco da Gama", "Christopher Columbus", "James Cook", "Marco Polo"], answer: "B" },
+  { q: "4. Who built the Taj Mahal?", options: ["Akbar", "Babur", "Shah Jahan", "Aurangzeb"], answer: "C" },
+  { q: "5. Who was the first Prime Minister of India?", options: ["Mahatma Gandhi", "Dr. Rajendra Prasad", "Jawaharlal Nehru", "Lal Bahadur Shastri"], answer: "C" },
+  { q: "6. Where did the Industrial Revolution begin?", options: ["France", "Germany", "USA", "England"], answer: "D" },
+  { q: "7. Who was known as the Iron Man of India?", options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Sardar Vallabhbhai Patel", "Subhas Chandra Bose"], answer: "C" },
+  { q: "8. What was the capital of the Maurya Empire?", options: ["Delhi", "Pataliputra", "Ujjain", "Varanasi"], answer: "B" },
+  { q: "9. Who was the first emperor of the Maurya Dynasty?", options: ["Ashoka", "Chandragupta Maurya", "Bindusara", "Harsha"], answer: "B" },
+  { q: "10. Who wrote the Indian National Anthem?", options: ["Bankim Chandra Chatterjee", "Rabindranath Tagore", "Sarojini Naidu", "Subhas Chandra Bose"], answer: "B" },
+  { q: "11. Who led the Salt March?", options: ["Subhas Chandra Bose", "Mahatma Gandhi", "Jawaharlal Nehru", "Bal Gangadhar Tilak"], answer: "B" },
+  { q: "12. In which year did World War I begin?", options: ["1914", "1939", "1945", "1920"], answer: "A" },
+  { q: "13. Who founded the Mughal Empire in India?", options: ["Akbar", "Aurangzeb", "Babur", "Humayun"], answer: "C" },
+  { q: "14. When was the Constitution of India adopted?", options: ["1947", "1950", "1949", "1952"], answer: "B" },
+  { q: "15. Who was the leader of the 1857 revolt in Jhansi?", options: ["Begum Hazrat Mahal", "Rani Lakshmibai", "Tantia Tope", "Mangal Pandey"], answer: "B" },
+  { q: "16. Who was known as 'Netaji'?", options: ["Bhagat Singh", "Subhas Chandra Bose", "Sardar Patel", "Jawaharlal Nehru"], answer: "B" },
+  { q: "17. Who discovered the sea route to India?", options: ["Christopher Columbus", "Ferdinand Magellan", "Vasco da Gama", "James Cook"], answer: "C" },
+  { q: "18. Who was the last Governor-General of independent India?", options: ["Lord Mountbatten", "C. Rajagopalachari", "Warren Hastings", "Cornwallis"], answer: "B" },
+  { q: "19. Who invented the telephone?", options: ["Alexander Graham Bell", "Thomas Edison", "Nikola Tesla", "Isaac Newton"], answer: "A" },
+  { q: "20. Where is the Red Fort located?", options: ["Mumbai", "Kolkata", "Hyderabad", "Delhi"], answer: "D" },
+  { q: "21. What is the significance of 26 January in India?", options: ["Independence Day", "Republic Day", "Gandhi Jayanti", "Children's Day"], answer: "B" },
+  { q: "22. Who wrote 'Discovery of India'?", options: ["Mahatma Gandhi", "Sardar Patel", "Jawaharlal Nehru", "Dr. Ambedkar"], answer: "C" },
+  { q: "23. What was the main cause of World War II?", options: ["Assassination", "Colonialism", "Hitler's invasion of Poland", "Slavery"], answer: "C" },
+  { q: "24. Who was the father of the Indian Constitution?", options: ["Jawaharlal Nehru", "Dr. B.R. Ambedkar", "Rajendra Prasad", "Sardar Patel"], answer: "B" },
+  { q: "25. Who painted the Mona Lisa?", options: ["Van Gogh", "Picasso", "Leonardo da Vinci", "Michelangelo"], answer: "C" },
+  { q: "26. What empire did Akbar belong to?", options: ["Gupta", "Mughal", "Maurya", "Chola"], answer: "B" },
+  { q: "27. When did the Berlin Wall fall?", options: ["1989", "1990", "1985", "1991"], answer: "A" },
+  { q: "28. Who gave the slogan 'Do or Die'?", options: ["Bhagat Singh", "Gandhi", "Nehru", "Tilak"], answer: "B" },
+  { q: "29. What is the full form of INC?", options: ["Indian National Congress", "Indian Noble Community", "Indian New Council", "Indian National Court"], answer: "A" },
+  { q: "30. Who founded the Indian National Congress?", options: ["Gandhi", "A.O. Hume", "Nehru", "Patel"], answer: "B" },
+  { q: "31. What is the oldest civilization in India?", options: ["Vedic", "Gupta", "Harappan", "Maurya"], answer: "C" },
+  { q: "32. In which year did the Quit India Movement start?", options: ["1942", "1930", "1919", "1947"], answer: "A" },
+  { q: "33. Who is known for the slogan 'Swaraj is my birthright'?", options: ["Tilak", "Nehru", "Bose", "Ambedkar"], answer: "A" },
+  { q: "34. Who signed the Treaty of Versailles?", options: ["Germany", "Japan", "Italy", "USA"], answer: "A" },
+  { q: "35. What was the capital of the British Raj?", options: ["Chennai", "Kolkata", "Delhi", "Mumbai"], answer: "C" },
+  { q: "36. Who was assassinated in 1948?", options: ["Indira Gandhi", "Lal Bahadur Shastri", "Rajiv Gandhi", "Mahatma Gandhi"], answer: "D" },
+  { q: "37. What is Jallianwala Bagh known for?", options: ["Victory celebration", "British massacre", "Independence treaty", "Peace movement"], answer: "B" },
+  { q: "38. Which city was previously called Bombay?", options: ["Kolkata", "Chennai", "Mumbai", "Hyderabad"], answer: "C" },
+  { q: "39. Who was the German dictator during WWII?", options: ["Stalin", "Mussolini", "Churchill", "Hitler"], answer: "D" },
+  { q: "40. Who was the first woman Prime Minister of India?", options: ["Sarojini Naidu", "Indira Gandhi", "Sushma Swaraj", "Pratibha Patil"], answer: "B" }
+];
+
+    const correctAnswers = {};
+    const userAnswers = {};
+    const container = document.getElementById("questions-container");
+    const navButtonsDiv = document.getElementById("navButtons");
+
+    questions.forEach((q, index) => {
+      const qId = `question${index + 1}`;
+      correctAnswers[qId] = q.answer;
+
+      const btn = document.createElement("div");
+      btn.className = "button";
+      btn.id = `nav-${qId}`;
+      btn.textContent = index + 1;
+      btn.onclick = () => {
+        document.getElementById(qId).scrollIntoView({ behavior: 'smooth' });
+      };
+      navButtonsDiv.appendChild(btn);
+
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question";
+      questionDiv.id = qId;
+
+      const questionText = document.createElement("p");
+      questionText.textContent = q.q;
+      questionDiv.appendChild(questionText);
+
+      const ul = document.createElement("ul");
+      ["A", "B", "C", "D"].forEach((label, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${label}. ${q.options[i]}`;
+        li.setAttribute("onclick", `checkAnswer(this, '${label}', '${qId}')`);
+        ul.appendChild(li);
+      });
+
+      questionDiv.appendChild(ul);
+      questionDiv.innerHTML += `<div class="result" id="result-${qId}"></div>`;
+      container.appendChild(questionDiv);
+    });
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        document.getElementById("correctSound").play();
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+
+    function calculateScore() {
+  let score = 0;
+  for (let key in correctAnswers) {
+    if (userAnswers[key] === true) score++;
+  }
+
+  const total = Object.keys(correctAnswers).length;
+  const finalScoreDiv = document.getElementById("finalScore");
+
+  if (score >= 14) {
+    finalScoreDiv.textContent = `You scored ${score}/${total}. Congratulations! 🎉`;
+    finalScoreDiv.style.color = "green";
+  } else {
+    finalScoreDiv.textContent = `You scored ${score}/${total}. Try again! 😢`;
+    finalScoreDiv.style.color = "red";
+  }
+
+  // Add this part to redirect after 2 seconds
+  setTimeout(() => {
+    window.location.href = "dashboard.html";
+  }, 5000);
+}
+    function finishQuiz() {
+      if (confirm("Are you sure you want to submit the quiz?")) {
+        calculateScore();
+      }
+    }
+
+    // Timer logic
+    let totalTime = 50 * 60;
+    const timerDisplay = document.getElementById("timer");
+
+    function updateTimer() {
+      const minutes = Math.floor(totalTime / 60);
+      const seconds = totalTime % 60;
+      timerDisplay.textContent = `Time Left: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      if (totalTime > 0) {
+        totalTime--;
+      } else {
+        clearInterval(timerInterval);
+        calculateScore();
+        alert("Time's up! Your quiz is being submitted.");
+      }
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+	// Your existing questions array and other variables...
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+      const correctSound = document.getElementById("correctSound");
+      const incorrectSound = document.getElementById("incorrectSound");
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        correctSound.play(); // Play correct answer sound
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        incorrectSound.play(); // Play incorrect answer sound
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+
+    // Rest of your existing JavaScript...
+  </script>
+</body>
+</html>

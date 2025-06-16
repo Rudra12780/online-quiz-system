@@ -1,0 +1,435 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>environment studies Quiz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+body {
+  font-family: 'Times New Roman', Times, serif;
+  margin: 50px;
+  padding: 40px;
+  background-color: #008080     ;
+  background-size: 100% 100%; /* Changed from cover to full width & height */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #000;
+}
+
+#home-icon {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  padding: 12px 20px; /* bigger size */
+  background-color: transparent;
+  /* border: 2px solid white;  <-- removed */
+  color: white;
+  font-size: 24px; /* bigger icon */
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+#home-icon i {
+  color: black;
+  transition: color 0.3s ease;
+}
+
+#home-icon:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: white;
+  text-decoration: none;
+}
+
+
+#home-icon:hover i {
+  color: black;
+}
+/* NEW: Submit button styles */
+#submit-btn {
+  padding: 12px 20px; /* match home icon */
+  font-size: 24px; /* same size */
+  font-weight: bold;
+  background-color: transparent;
+  border: none; /* no border */
+  color: black;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+}
+
+#submit-btn:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: black;
+  text-decoration: none;
+}
+
+
+    #timer {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #f2f2f2;
+      padding: 10px 15px;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    .quiz-navigation {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      width: 220px;
+      background-image: url("quiz background/esc.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 5;
+      color: black;
+    }
+
+    .navigation-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+.navigation-buttons .button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background-color: transparent;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: color 0.3s, transform 0.2s;
+      color: black;
+      backdrop-filter: none
+    }
+
+    .navigation-buttons .button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+      -webkit-text-fill-color: none;
+      background-size: cover;
+      background-position: center;
+    }
+	
+
+    .finish {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+      text-align: center;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      margin: 2px 0;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+
+    li:hover {
+      background-color: #e0e0e0;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    .result {
+      font-size: 16px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #finalScore {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #submit-btn {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+	.finish {
+  cursor: pointer;
+  color: black; /* Changed to white */
+  text-decoration: underline;
+  text-align: center;
+}
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+<a id="home-icon" href="dashboard.html" title="Go to Dashboard">
+  <i class="fa fa-home" aria-hidden="true"></i>
+</a>
+
+
+
+<div id="timer">Time Left: 50:00</div>
+
+<div class="quiz-wrapper">
+  <div class="quiz-container">
+    <h1>environment studies Quiz</h1>
+    <div id="questions-container"></div>
+    <button id="submit-btn" onclick="submitQuiz()">Submit</button>
+    <div id="finalScore"></div>
+  </div>
+
+  <div class="quiz-navigation">
+    <div class="nav-content">
+      <h3>QUIZ NAVIGATION</h3>
+      <div class="navigation-buttons" id="nav-buttons"></div>
+      <div class="finish" onclick="submitQuiz()">Finish attempting...</div>
+    </div>
+  </div>
+</div>
+
+<audio id="correctSound">
+    <source src="quiz background/correct.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="incorrectSound">
+    <source src="quiz background/incorrect.mp3" type="audio/mpeg">
+  </audio>
+
+<script>
+  const questions = [
+    { q: "1. What is the primary source of energy for the Earth's climate system?", options: ["Sun", "Wind", "Water", "Coal"], answer: "A" },
+    { q: "2. Which gas is most responsible for global warming?", options: ["Carbon Dioxide", "Oxygen", "Nitrogen", "Methane"], answer: "A" },
+    { q: "3. What is the term for a sustainable energy source that is replenished naturally?", options: ["Non-renewable", "Renewable", "Fossil", "Alternative"], answer: "B" },
+    { q: "4. Which of the following is a non-renewable resource?", options: ["Solar energy", "Wind power", "Coal", "Geothermal energy"], answer: "C" },
+    { q: "5. Which country is the largest producer of wind energy?", options: ["United States", "China", "Germany", "India"], answer: "B" },
+    { q: "6. What is the term for the effect when pollutants are trapped in the atmosphere by the Earth's natural layers?", options: ["Greenhouse Effect", "Ozone Depletion", "Acid Rain", "Smog"], answer: "A" },
+    { q: "7. Which of these is a greenhouse gas?", options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Helium"], answer: "C" },
+    { q: "8. Which of these animals is most affected by climate change?", options: ["Elephant", "Polar Bear", "Penguin", "Tiger"], answer: "B" },
+    { q: "9. What is the main cause of deforestation?", options: ["Agriculture", "Urbanization", "Mining", "All of the above"], answer: "D" },
+    { q: "10. What does the term 'carbon footprint' refer to?", options: ["Amount of carbon in the air", "Amount of carbon used by industries", "Total greenhouse gas emissions from human activities", "Total number of trees in an area"], answer: "C" },
+    { q: "11. Which renewable energy source harnesses energy from the sun?", options: ["Solar Power", "Wind Power", "Hydropower", "Geothermal Energy"], answer: "A" },
+    { q: "12. Which of these is a negative effect of air pollution?", options: ["Increased visibility", "Better respiratory health", "Smog and respiratory diseases", "Improved agricultural yield"], answer: "C" },
+    { q: "13. What is the purpose of the Paris Agreement?", options: ["To reduce deforestation", "To increase greenhouse gases", "To combat global climate change", "To increase global temperature"], answer: "C" },
+    { q: "14. Which of the following is a consequence of ocean acidification?", options: ["Harm to marine life", "Decreased water temperature", "Increase in algae", "More fish populations"], answer: "A" },
+    { q: "15. What is the primary cause of ocean pollution?", options: ["Plastic waste", "Oil spills", "Agricultural runoff", "All of the above"], answer: "D" },
+    { q: "16. What is the Greenhouse Effect?", options: ["Heat from the Earth's core", "The trapping of heat by the atmosphere", "Energy from the sun", "Heat released by ocean currents"], answer: "B" },
+    { q: "17. Which of the following is a benefit of using public transport?", options: ["Decreased air pollution", "Higher traffic congestion", "Increased gas consumption", "More carbon emissions"], answer: "A" },
+    { q: "18. What is a significant consequence of melting ice caps?", options: ["Rising sea levels", "Lower temperatures", "More land area", "Less rain"], answer: "A" },
+    { q: "19. Which of these energy sources is derived from the Earth's internal heat?", options: ["Wind Power", "Hydropower", "Geothermal Energy", "Solar Power"], answer: "C" },
+    { q: "20. What does 'sustainability' mean in environmental terms?", options: ["Overuse of natural resources", "Conservation and responsible use of resources", "Pollution-free environment", "Excessive industrialization"], answer: "B" }
+  ];
+
+
+  const correctAnswers = {};
+  const userAnswers = {};
+  const container = document.getElementById("questions-container");
+  const navButtons = document.getElementById("nav-buttons");
+
+  questions.forEach((q, index) => {
+    const qId = `question${index + 1}`;
+    correctAnswers[qId] = q.answer;
+
+    const questionDiv = document.createElement("div");
+    questionDiv.className = "question";
+    questionDiv.id = qId;
+
+    const questionText = document.createElement("p");
+    questionText.textContent = q.q;
+    questionDiv.appendChild(questionText);
+
+    const ul = document.createElement("ul");
+
+    ["A", "B", "C", "D"].forEach((label, i) => {
+      const li = document.createElement("li");
+      li.textContent = `${label}. ${q.options[i]}`;
+      li.setAttribute("onclick", `checkAnswer(this, '${label}', '${qId}')`);
+      ul.appendChild(li);
+    });
+
+    questionDiv.appendChild(ul);
+    questionDiv.innerHTML += `<div class="result" id="result-${qId}"></div>`;
+    container.appendChild(questionDiv);
+
+    const navBtn = document.createElement("div");
+    navBtn.className = "button";
+    navBtn.textContent = `${index + 1}`;  // show only numbers here
+    navBtn.onclick = () => {
+      document.getElementById(qId).scrollIntoView({ behavior: 'smooth' });
+    };
+    navButtons.appendChild(navBtn);
+  });
+
+  function checkAnswer(selectedOption, answer, questionId) {
+    if (userAnswers[questionId] !== undefined) return;
+
+    const correctAnswer = correctAnswers[questionId];
+    const resultDiv = document.getElementById(`result-${questionId}`);
+    const options = document.querySelectorAll(`#${questionId} li`);
+
+    options.forEach(option => option.style.pointerEvents = 'none');
+
+    if (answer === correctAnswer) {
+      selectedOption.classList.add("correct");
+      resultDiv.textContent = "Correct!";
+      document.getElementById("correctSound").play();
+      userAnswers[questionId] = true;
+    } else {
+      selectedOption.classList.add("incorrect");
+      resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+      userAnswers[questionId] = false;
+    }
+
+    // Mark nav button as answered
+    markNavButtonAnswered(questionId);
+  }
+
+  function markNavButtonAnswered(questionId) {
+  const questionNumber = parseInt(questionId.replace('question', ''));
+  const buttons = document.querySelectorAll('.navigation-buttons .button');
+  if (buttons[questionNumber - 1]) {
+    buttons[questionNumber - 1].style.backgroundColor = '#E6E4D0';  // Changed color here
+    buttons[questionNumber - 1].style.color = '#000';              // Adjust text color for contrast
+  }
+}
+
+
+  function submitQuiz() {
+    const total = Object.keys(correctAnswers).length;
+    if (Object.keys(userAnswers).length < total) {
+      alert("Please answer all questions before submitting.");
+      return;
+    }
+
+    let score = 0;
+    for (let key in correctAnswers) {
+      if (userAnswers[key] === true) score++;
+    }
+
+    const finalScoreDiv = document.getElementById("finalScore");
+    if (score >= 14) {
+      finalScoreDiv.textContent = `You scored ${score}/${total}. Congratulations. `;
+      finalScoreDiv.style.color = "green";
+    } else {
+      finalScoreDiv.textContent = `You scored ${score}/${total}. Try again! `;
+      finalScoreDiv.style.color = "red";
+    }
+
+ setTimeout(() => {
+      if (score < 10) {
+        window.location.href = "easyes.html";
+      } else if (score === 10) {
+        window.location.href = "meduimes.html";
+      } else {
+        window.location.href = "hardes.html";
+      }
+    }, 3000);
+  }
+  
+
+  let totalTime = 50 * 60;
+  const timerEl = document.getElementById("timer");
+  const timer = setInterval(() => {
+    const minutes = Math.floor(totalTime / 60);
+    const seconds = totalTime % 60;
+    timerEl.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+    totalTime--;
+
+    if (totalTime < 0) {
+      clearInterval(timer);
+      submitQuiz();
+      alert("Time's up! Quiz submitted automatically.");
+    }
+  }, 1000);
+  // Your existing questions array and other variables...
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+      const correctSound = document.getElementById("correctSound");
+      const incorrectSound = document.getElementById("incorrectSound");
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        correctSound.play(); // Play correct answer sound
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        incorrectSound.play(); // Play incorrect answer sound
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+
+    // Rest of your existing JavaScript...
+</script>
+
+</body>
+</html>

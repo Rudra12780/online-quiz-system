@@ -1,0 +1,814 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Infinite MCQ Question Generator</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<style>
+   body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: transparent;
+      color: white;
+    }
+    
+    #home-icon {
+      position: fixed;
+      top: 10px;
+      left: 20px;
+      padding: 12px 20px;
+      background-color: transparent;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: box-shadow 0.3s ease, color 0.3s ease;
+      text-decoration: none;
+    }
+
+    #home-icon i {
+      color: white;
+      transition: color 0.3s ease;
+    }
+
+    #home-icon:hover {
+      box-shadow: 0 0 12px 4px rgba(0, 134, 117, 0.8); /* Teal glow instead of black */
+      color: white;
+      text-decoration: none;
+    }
+
+    #home-icon:hover i {
+      color: white;
+    }
+
+    .quiz-container {
+      padding: 20px;
+      background-color: transparent; /* Changed from rgba to fully transparent */
+      border-radius: 8px;
+      box-shadow: none;
+      width: 50%;
+      margin: auto;
+      border: none;
+      backdrop-filter: none; /* Removed blur effect */
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: white; /* Changed to white */
+      text-shadow: 0 2px 4px rgba(0, 134, 117, 0.5); /* Teal text shadow */
+    }
+
+    .question {
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .question p {
+      font-size: 18px;
+      color: white;
+    }
+
+    .options {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .options li {
+      padding: 10px;
+      margin: 5px 0;
+      cursor: pointer;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(0, 134, 117, 0.3);
+      border-radius: 5px;
+      font-size: 16px;
+      transition: all 0.3s;
+      color: white;
+    }
+
+    .options li:hover {
+      background-color: rgba(0, 134, 117, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .correct {
+      background-color: #00857d;
+      color: white;
+      box-shadow: 0 0 10px rgba(0, 134, 117, 0.5);
+    }
+
+    .incorrect {
+      background-color: #f44336;
+      color: white;
+    }
+
+    #generate-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: white;
+      color: black;
+      border: none;
+      border-radius: 5px;
+      transition: all 0.3s;
+    }
+
+    #generate-btn:hover {
+      background-color: #006c5c;
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(0, 134, 117, 0.6);
+    }
+
+    #score {
+      font-size: 18px;
+      text-align: center;
+      margin-top: 20px;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0, 134, 117, 0.5);
+    }
+
+    /* Background video styling */
+    #bg-video {
+      position: fixed;
+      top: 0; 
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.9;
+    }
+</style>
+</head>
+<body>
+<video id="bg-video" autoplay muted loop>
+  <source src="quiz background/gen.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+<a id="home-icon" href="dashboard.html" title="Go to Dashboard">
+  <i class="fa fa-home" aria-hidden="true"></i>
+</a>
+
+
+
+  <div class="quiz-container">
+    <h1>Infinite MCQ Question Generator</h1>
+    <div id="question-container"></div>
+    <button id="generate-btn" onclick="generateQuestion()">Generate Question</button>
+    <div id="score"></div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+  // Try to autoplay the background video
+  const bgVideo = document.getElementById('bg-video');
+  if(bgVideo) {
+    bgVideo.play().catch(e => {
+      console.log("Autoplay prevented, showing fallback");
+      // You could add a fallback image here if needed
+    });
+  }
+  
+  // Generate first question on load
+  generateQuestion();
+});
+    // Hardest MCQs
+    const questions = [
+      { 
+        question: "What is the capital of Mongolia?", 
+        options: ["A) Ulaanbaatar", "B) Almaty", "C) Bishkek", "D) Tashkent"], 
+        answer: "A) Ulaanbaatar"
+      },
+      { 
+        question: "Which is the smallest prime number?", 
+        options: ["A) 1", "B) 2", "C) 3", "D) 5"], 
+        answer: "B) 2"
+      },
+      { 
+        question: "What is the hardest natural substance?", 
+        options: ["A) Gold", "B) Iron", "C) Diamond", "D) Platinum"], 
+        answer: "C) Diamond"
+      },
+      { 
+        question: "Which element has the chemical symbol ‘Hg’?", 
+        options: ["A) Hydrogen", "B) Helium", "C) Mercury", "D) Gallium"], 
+        answer: "C) Mercury"
+      },
+      { 
+        question: "Which planet is closest to the Sun?", 
+        options: ["A) Earth", "B) Mercury", "C) Venus", "D) Mars"], 
+        answer: "B) Mercury"
+      },
+      { 
+        question: "Who invented the telephone?", 
+        options: ["A) Alexander Graham Bell", "B) Thomas Edison", "C) Nikola Tesla", "D) Albert Einstein"], 
+        answer: "A) Alexander Graham Bell"
+      },
+      { 
+        question: "What is the tallest mountain on Earth?", 
+        options: ["A) K2", "B) Mount Everest", "C) Kangchenjunga", "D) Lhotse"], 
+        answer: "B) Mount Everest"
+      },
+      { 
+        question: "Which country is known as the Land of the Rising Sun?", 
+        options: ["A) China", "B) South Korea", "C) Japan", "D) Thailand"], 
+        answer: "C) Japan"
+      },
+      { 
+        question: "Who was the first woman to fly solo across the Atlantic?", 
+        options: ["A) Amelia Earhart", "B) Bessie Coleman", "C) Harriet Quimby", "D) Jacqueline Cochran"], 
+        answer: "A) Amelia Earhart"
+      },
+      { 
+        question: "What is the capital of Canada?", 
+        options: ["A) Toronto", "B) Montreal", "C) Ottawa", "D) Vancouver"], 
+        answer: "C) Ottawa"
+      },
+      { 
+        question: "Which is the longest river in the world?", 
+        options: ["A) Nile", "B) Amazon", "C) Yangtze", "D) Mississippi"], 
+        answer: "A) Nile"
+      },
+      { 
+        question: "What is the square root of 144?", 
+        options: ["A) 10", "B) 11", "C) 12", "D) 14"], 
+        answer: "C) 12"
+      },
+      { 
+        question: "Which country was the first to give women the right to vote?", 
+        options: ["A) New Zealand", "B) United States", "C) Canada", "D) Sweden"], 
+        answer: "A) New Zealand"
+      },
+      { 
+        question: "Who discovered penicillin?", 
+        options: ["A) Louis Pasteur", "B) Albert Calmette", "C) Alexander Fleming", "D) Robert Koch"], 
+        answer: "C) Alexander Fleming"
+      },
+      { 
+        question: "In which year did World War II end?", 
+        options: ["A) 1942", "B) 1943", "C) 1944", "D) 1945"], 
+        answer: "D) 1945"
+      },
+      { 
+        question: "Which element is represented by the symbol ‘Na’?", 
+        options: ["A) Sodium", "B) Nitrogen", "C) Neon", "D) Nickel"], 
+        answer: "A) Sodium"
+      },
+      { 
+        question: "Which planet is known for its rings?", 
+        options: ["A) Jupiter", "B) Saturn", "C) Uranus", "D) Neptune"], 
+        answer: "B) Saturn"
+      },
+      { 
+        question: "Who was the first president of the United States?", 
+        options: ["A) George Washington", "B) Thomas Jefferson", "C) Abraham Lincoln", "D) John Adams"], 
+        answer: "A) George Washington"
+      },
+      { 
+        question: "What is the currency of Japan?", 
+        options: ["A) Yen", "B) Won", "C) Ringgit", "D) Peso"], 
+        answer: "A) Yen"
+      },
+      { 
+        question: "Which is the smallest ocean on Earth?", 
+        options: ["A) Atlantic Ocean", "B) Indian Ocean", "C) Arctic Ocean", "D) Southern Ocean"], 
+        answer: "C) Arctic Ocean"
+      },
+      { 
+        question: "What is the largest organ in the human body?", 
+        options: ["A) Brain", "B) Liver", "C) Skin", "D) Heart"], 
+        answer: "C) Skin"
+      },
+      { 
+        question: "Which is the longest bone in the human body?", 
+        options: ["A) Tibia", "B) Femur", "C) Humerus", "D) Radius"], 
+        answer: "B) Femur"
+      },
+      { 
+        question: "Who wrote the play ‘Romeo and Juliet’?", 
+        options: ["A) William Shakespeare", "B) Charles Dickens", "C) George Orwell", "D) Mark Twain"], 
+        answer: "A) William Shakespeare"
+      },
+      { 
+        question: "What is the chemical symbol for gold?", 
+        options: ["A) Au", "B) Ag", "C) Pb", "D) Fe"], 
+        answer: "A) Au"
+      },
+      { 
+        question: "What is the capital city of Australia?", 
+        options: ["A) Sydney", "B) Melbourne", "C) Canberra", "D) Adelaide"], 
+        answer: "C) Canberra"
+      },
+      { 
+        question: "Which ocean is the largest?", 
+        options: ["A) Atlantic Ocean", "B) Indian Ocean", "C) Pacific Ocean", "D) Arctic Ocean"], 
+        answer: "C) Pacific Ocean"
+      },
+ { 
+    question: "Which of the following is a key element of time management?", 
+    options: ["A) Multitasking", "B) Delegation", "C) Procrastination", "D) Ignoring deadlines"], 
+    answer: "B) Delegation"
+},
+{ 
+    question: "Which of the following is a type of leadership style?", 
+    options: ["A) Autocratic", "B) Delegative", "C) Transformational", "D) All of the above"], 
+    answer: "D) All of the above"
+},
+{ 
+    question: "What is a SMART goal?", 
+    options: ["A) Specific, Measurable, Achievable, Realistic, Timely", "B) Simple, Manageable, Available, Ready, Tolerable", "C) Strategic, Measurable, Accessible, Reachable, Targeted", "D) Systematic, Motivated, Assertive, Realistic, Timely"], 
+    answer: "A) Specific, Measurable, Achievable, Realistic, Timely"
+},
+{ 
+    question: "Which of the following is an important characteristic of effective communication?", 
+    options: ["A) Clarity", "B) Active listening", "C) Empathy", "D) All of the above"], 
+    answer: "D) All of the above"
+},
+{ 
+    question: "What is the main objective of conflict management?", 
+    options: ["A) To avoid conflict at all costs", "B) To ensure all parties are happy", "C) To resolve disagreements in a constructive manner", "D) To impose authority on others"], 
+    answer: "C) To resolve disagreements in a constructive manner"
+},
+{ 
+    question: "Which of the following is a type of decision-making model?", 
+    options: ["A) Rational model", "B) Intuitive model", "C) Incremental model", "D) All of the above"], 
+    answer: "D) All of the above"
+},
+{ 
+    question: "Which of the following is a major principle of project management?", 
+    options: ["A) Flexibility", "B) Clear goals", "C) Independent execution", "D) All of the above"], 
+    answer: "B) Clear goals"
+},
+{ 
+    question: "What is the primary purpose of performance appraisals?", 
+    options: ["A) To criticize employees", "B) To provide feedback and set goals for improvement", "C) To reward employees", "D) To track attendance"], 
+    answer: "B) To provide feedback and set goals for improvement"
+},
+{ 
+    question: "Which of the following is a benefit of team collaboration?", 
+    options: ["A) Increased productivity", "B) Diverse perspectives", "C) Enhanced problem-solving skills", "D) All of the above"], 
+    answer: "D) All of the above"
+},
+{ 
+    question: "Which of the following describes 'delegation' in management?", 
+    options: ["A) Taking on all responsibilities by oneself", "B) Assigning tasks to team members to utilize their skills", "C) Giving away all authority", "D) Ignoring team members' abilities"], 
+    answer: "B) Assigning tasks to team members to utilize their skills"
+},
+{ 
+    question: "What is a key strategy for time management?", 
+    options: ["A) Prioritizing tasks", "B) Delaying decisions", "C) Multitasking", "D) All of the above"], 
+    answer: "A) Prioritizing tasks"
+},
+{ 
+    question: "What is the goal of change management?", 
+    options: ["A) To resist all changes", "B) To make changes without any input", "C) To manage the human aspect of change and help teams transition", "D) To ignore the effects of change"], 
+    answer: "C) To manage the human aspect of change and help teams transition"
+},
+{ 
+    question: "What is emotional intelligence?", 
+    options: ["A) The ability to solve complex problems", "B) The ability to understand and manage your own emotions, and recognize emotions in others", "C) The ability to multitask effectively", "D) The ability to work alone"], 
+    answer: "B) The ability to understand and manage your own emotions, and recognize emotions in others"
+},
+{ 
+    question: "Which of the following is an example of a leadership skill?", 
+    options: ["A) Time management", "B) Decision-making", "C) Conflict resolution", "D) All of the above"], 
+    answer: "D) All of the above"
+},
+{ 
+    question: "Which of the following is a part of strategic management?", 
+    options: ["A) Goal setting", "B) Planning", "C) Execution", "D) All of the above"], 
+    answer: "D) All of the above"
+},
+{ 
+    question: "What does the acronym SWOT stand for in strategic planning?", 
+    options: ["A) Strengths, Weaknesses, Opportunities, Threats", "B) Strategies, Work, Outcomes, Targets", "C) Skills, Weaknesses, Objectives, Techniques", "D) None of the above"], 
+    answer: "A) Strengths, Weaknesses, Opportunities, Threats"
+},
+{ 
+    question: "What is the primary objective of effective delegation?", 
+    options: ["A) To give away responsibility", "B) To share responsibility and empower team members", "C) To avoid workload", "D) To control every detail of a project"], 
+    answer: "B) To share responsibility and empower team members"
+},
+{ 
+    question: "Which of the following is a key factor in building team morale?", 
+    options: ["A) Recognition of effort", "B) Assigning challenging tasks", "C) Providing constructive feedback", "D) All of the above"], 
+    answer: "D) All of the above"
+},
+{ 
+    question: "Which management skill is crucial for problem-solving?", 
+    options: ["A) Critical thinking", "B) Financial management", "C) Delegation", "D) Emotional intelligence"], 
+    answer: "A) Critical thinking"
+},
+{ 
+    question: "Which of the following is an example of effective conflict resolution?", 
+    options: ["A) Avoiding the conflict", "B) Focusing on finding a win-win solution", "C) Ignoring both sides of the argument", "D) Taking sides"], 
+    answer: "B) Focusing on finding a win-win solution"
+},
+{ 
+    question: "What does the term 'business ethics' refer to?", 
+    options: ["A) Following the rules of business to gain profits", "B) Maintaining fairness, honesty, and integrity in business decisions", "C) Focusing solely on profits", "D) None of the above"], 
+    answer: "B) Maintaining fairness, honesty, and integrity in business decisions"
+},
+{ 
+    question: "Which of the following is an example of a good project management practice?", 
+    options: ["A) Setting clear objectives", "B) Communicating progress regularly", "C) Involving stakeholders in decision-making", "D) All of the above"], 
+    answer: "D) All of the above"
+},
+{ 
+    question: "What is a common challenge in time management?", 
+    options: ["A) Prioritizing tasks effectively", "B) Avoiding distractions", "C) Setting unrealistic goals", "D) All of the above"], 
+    answer: "D) All of the above"
+},
+{ 
+    question: "What is the purpose of a SWOT analysis?", 
+    options: ["A) To identify market trends", "B) To evaluate strengths, weaknesses, opportunities, and threats", "C) To determine the pricing strategy", "D) To develop marketing campaigns"], 
+    answer: "B) To evaluate strengths, weaknesses, opportunities, and threats"
+},
+{ 
+    question: "Which of the following is an essential aspect of decision-making?", 
+    options: ["A) Considering all available options", "B) Ignoring opinions from others", "C) Delaying decisions", "D) Making quick decisions without thinking"], 
+    answer: "A) Considering all available options"
+},
+
+    {
+        "question": "Who was the leader of Nazi Germany during World War II?",
+        "options": ["A) Winston Churchill", "B) Franklin D. Roosevelt", "C) Adolf Hitler", "D) Benito Mussolini"],
+        "answer": "C) Adolf Hitler"
+    },
+    {
+        "question": "What year did World War II begin?",
+        "options": ["A) 1938", "B) 1939", "C) 1940", "D) 1941"],
+        "answer": "B) 1939"
+    },
+    {
+        "question": "Which event directly triggered the United States' entry into World War II?",
+        "options": ["A) Bombing of Pearl Harbor", "B) Battle of Midway", "C) D-Day", "D) Attack on Manila"],
+        "answer": "A) Bombing of Pearl Harbor"
+    },
+    {
+        "question": "Which country was invaded by Germany to start World War II?",
+        "options": ["A) Poland", "B) France", "C) Denmark", "D) Belgium"],
+        "answer": "A) Poland"
+    },
+    {
+        "question": "Which country was NOT part of the Axis Powers during World War II?",
+        "options": ["A) Italy", "B) Japan", "C) Soviet Union", "D) Germany"],
+        "answer": "C) Soviet Union"
+    },
+    {
+        "question": "Which battle is considered the turning point of the war in the Pacific?",
+        "options": ["A) Battle of Midway", "B) Battle of Iwo Jima", "C) Battle of Okinawa", "D) Battle of Coral Sea"],
+        "answer": "A) Battle of Midway"
+    },
+    {
+        "question": "Who was the British Prime Minister at the start of World War II?",
+        "options": ["A) Clement Attlee", "B) Winston Churchill", "C) Neville Chamberlain", "D) Harold Macmillan"],
+        "answer": "C) Neville Chamberlain"
+    },
+    {
+        "question": "What was the name of the treaty that ended World War I and laid the groundwork for World War II?",
+        "options": ["A) Treaty of Versailles", "B) Treaty of Paris", "C) Treaty of Brest-Litovsk", "D) Treaty of Tordesillas"],
+        "answer": "A) Treaty of Versailles"
+    },
+    {
+        "question": "Which city was the site of the major Nazi military headquarters in France?",
+        "options": ["A) Paris", "B) Lyon", "C) Berlin", "D) Vichy"],
+        "answer": "D) Vichy"
+    },
+    {
+        "question": "What was the name of the project that developed the first atomic bomb?",
+        "options": ["A) Operation Overlord", "B) Manhattan Project", "C) Operation Valkyrie", "D) Enigma Project"],
+        "answer": "B) Manhattan Project"
+    },
+    {
+        "question": "Which battle is considered the turning point in the European theater?",
+        "options": ["A) Battle of Stalingrad", "B) Battle of the Bulge", "C) Battle of El Alamein", "D) Battle of Normandy"],
+        "answer": "A) Battle of Stalingrad"
+    },
+    {
+        "question": "What year did World War II end?",
+        "options": ["A) 1943", "B) 1944", "C) 1945", "D) 1946"],
+        "answer": "C) 1945"
+    },
+    {
+        "question": "Which was the first major battle in the Pacific Theater of World War II?",
+        "options": ["A) Battle of Coral Sea", "B) Battle of Midway", "C) Battle of Guadalcanal", "D) Battle of Wake Island"],
+        "answer": "A) Battle of Coral Sea"
+    },
+    {
+        "question": "Which German city was the site of a major bombing campaign by the Allies, known as the 'Blitz'?",
+        "options": ["A) Berlin", "B) Dresden", "C) Munich", "D) Hamburg"],
+        "answer": "B) Dresden"
+    },
+    {
+        "question": "Which country did the Soviet Union invade in 1941, breaking the non-aggression pact?",
+        "options": ["A) Poland", "B) Finland", "C) France", "D) Germany"],
+        "answer": "B) Finland"
+    },
+    {
+        "question": "Who was the commander of Allied forces during the invasion of Normandy?",
+        "options": ["A) Dwight D. Eisenhower", "B) Bernard Montgomery", "C) George S. Patton", "D) Omar Bradley"],
+        "answer": "A) Dwight D. Eisenhower"
+    },
+    {
+        "question": "What was the code name for the German invasion of the Soviet Union?",
+        "options": ["A) Operation Barbarossa", "B) Operation Sea Lion", "C) Operation Overlord", "D) Operation Torch"],
+        "answer": "A) Operation Barbarossa"
+    },
+    {
+        "question": "Which country was occupied by Nazi forces during World War II but remained neutral?",
+        "options": ["A) Switzerland", "B) Sweden", "C) Spain", "D) Portugal"],
+        "answer": "B) Sweden"
+    },
+    {
+        "question": "Which city was the location of the first use of an atomic bomb in warfare?",
+        "options": ["A) Tokyo", "B) Nagasaki", "C) Hiroshima", "D) Kyoto"],
+        "answer": "C) Hiroshima"
+    },
+    {
+        "question": "What was the purpose of the Lend-Lease Act passed by the United States in 1941?",
+        "options": ["A) To provide military aid to Allies", "B) To stop German aggression", "C) To end Japanese expansion", "D) To build military alliances"],
+        "answer": "A) To provide military aid to Allies"
+    },
+    {
+        "question": "What was the main objective of Operation Overlord?",
+        "options": ["A) To invade North Africa", "B) To liberate France", "C) To invade Italy", "D) To defeat the Japanese in the Pacific"],
+        "answer": "B) To liberate France"
+    },
+    {
+        "question": "Which was the largest concentration camp during the Holocaust?",
+        "options": ["A) Auschwitz", "B) Dachau", "C) Treblinka", "D) Buchenwald"],
+        "answer": "A) Auschwitz"
+    },
+    {
+        "question": "Which of the following countries was part of the Allies during World War II?",
+        "options": ["A) Italy", "B) Japan", "C) United States", "D) Germany"],
+        "answer": "C) United States"
+    },
+    {
+        "question": "Which was the last Axis country to surrender in World War II?",
+        "options": ["A) Japan", "B) Italy", "C) Germany", "D) Hungary"],
+        "answer": "A) Japan"
+    },
+    {
+        "question": "Which battle marked the beginning of the end for Nazi Germany in the European theater?",
+        "options": ["A) Battle of Berlin", "B) Battle of Stalingrad", "C) Battle of Normandy", "D) Battle of the Bulge"],
+        "answer": "B) Battle of Stalingrad"
+    },
+    {
+        "question": "What was the name of the secret German code used during World War II?",
+        "options": ["A) Enigma", "B) Purple", "C) Navajo", "D) Zodiac"],
+        "answer": "A) Enigma"
+    },
+    {
+        "question": "Which of the following was a significant post-war outcome of World War II?",
+        "options": ["A) Formation of NATO", "B) Formation of the European Union", "C) End of communism", "D) Establishment of the United Nations"],
+        "answer": "D) Establishment of the United Nations"
+    },
+	{
+        "question": "Who is considered the creator of the universe in Hinduism?",
+        "options": ["A) Vishnu", "B) Shiva", "C) Brahma", "D) Lakshmi"],
+        "answer": "C) Brahma"
+    },
+    {
+        "question": "Who is the goddess of wealth and prosperity in Hinduism?",
+        "options": ["A) Saraswati", "B) Durga", "C) Lakshmi", "D) Parvati"],
+        "answer": "C) Lakshmi"
+    },
+    {
+        "question": "Who is known as the preserver of the universe in Hinduism?",
+        "options": ["A) Vishnu", "B) Brahma", "C) Shiva", "D) Ganesha"],
+        "answer": "A) Vishnu"
+    },
+    {
+        "question": "Which god is known as the remover of obstacles?",
+        "options": ["A) Vishnu", "B) Ganesha", "C) Shiva", "D) Krishna"],
+        "answer": "B) Ganesha"
+    },
+    {
+        "question": "Who is the god of destruction and transformation in Hinduism?",
+        "options": ["A) Vishnu", "B) Shiva", "C) Indra", "D) Yama"],
+        "answer": "B) Shiva"
+    },
+    {
+        "question": "Who is considered the god of love and desire in Hindu mythology?",
+        "options": ["A) Kama", "B) Ganesha", "C) Krishna", "D) Agni"],
+        "answer": "A) Kama"
+    },
+    {
+        "question": "Which Hindu god is often depicted with a blue complexion and playing a flute?",
+        "options": ["A) Shiva", "B) Vishnu", "C) Krishna", "D) Rama"],
+        "answer": "C) Krishna"
+    },
+    {
+        "question": "Which goddess is known as the divine mother and protector of the universe?",
+        "options": ["A) Saraswati", "B) Durga", "C) Lakshmi", "D) Parvati"],
+        "answer": "B) Durga"
+    },
+    {
+        "question": "Which god is known for his many avatars, including Rama and Krishna?",
+        "options": ["A) Shiva", "B) Vishnu", "C) Brahma", "D) Indra"],
+        "answer": "B) Vishnu"
+    },
+    {
+        "question": "Who is the god of fire in Hinduism?",
+        "options": ["A) Agni", "B) Surya", "C) Indra", "D) Vayu"],
+        "answer": "A) Agni"
+    },
+    {
+        "question": "Who is the god of the sun in Hindu mythology?",
+        "options": ["A) Surya", "B) Agni", "C) Indra", "D) Vayu"],
+        "answer": "A) Surya"
+    },
+    {
+        "question": "Which Hindu goddess is associated with wisdom and knowledge?",
+        "options": ["A) Lakshmi", "B) Saraswati", "C) Durga", "D) Parvati"],
+        "answer": "B) Saraswati"
+    },
+    {
+        "question": "Who is the husband of the goddess Parvati?",
+        "options": ["A) Vishnu", "B) Ganesha", "C) Shiva", "D) Brahma"],
+        "answer": "C) Shiva"
+    },
+    {
+        "question": "Which god is known for his dance of creation and destruction?",
+        "options": ["A) Vishnu", "B) Shiva", "C) Ganesha", "D) Rama"],
+        "answer": "B) Shiva"
+    },
+    {
+        "question": "Which god is known as the god of rain and thunder?",
+        "options": ["A) Agni", "B) Indra", "C) Vayu", "D) Surya"],
+        "answer": "B) Indra"
+    },
+    {
+        "question": "Which Hindu god is depicted as riding a chariot with Arjuna in the Bhagavad Gita?",
+        "options": ["A) Vishnu", "B) Krishna", "C) Shiva", "D) Rama"],
+        "answer": "B) Krishna"
+    },
+    {
+        "question": "Who is the god of death in Hinduism?",
+        "options": ["A) Yama", "B) Shiva", "C) Vishnu", "D) Agni"],
+        "answer": "A) Yama"
+    },
+    {
+        "question": "Which deity is considered the god of time in Hindu mythology?",
+        "options": ["A) Vishnu", "B) Shiva", "C) Kala", "D) Brahma"],
+        "answer": "C) Kala"
+    },
+    {
+        "question": "Which goddess is known as the goddess of power and strength?",
+        "options": ["A) Saraswati", "B) Lakshmi", "C) Parvati", "D) Durga"],
+        "answer": "D) Durga"
+    },
+    {
+        "question": "Which god is worshiped in the form of a black stone or lingam?",
+        "options": ["A) Vishnu", "B) Shiva", "C) Ganesha", "D) Indra"],
+        "answer": "B) Shiva"
+    },
+    {
+        "question": "Who is the god associated with the moon in Hinduism?",
+        "options": ["A) Chandra", "B) Surya", "C) Agni", "D) Vayu"],
+        "answer": "A) Chandra"
+    },
+    {
+        "question": "Which god is often depicted with a thousand heads and a thousand arms?",
+        "options": ["A) Vishnu", "B) Shiva", "C) Brahma", "D) Kartikeya"],
+        "answer": "C) Brahma"
+    },
+    {
+        "question": "Who is the son of Shiva and Parvati?",
+        "options": ["A) Vishnu", "B) Ganesha", "C) Kartikeya", "D) Brahma"],
+        "answer": "B) Ganesha"
+    },
+    {
+        "question": "Which god is associated with the serpent and is often depicted with a snake around his neck?",
+        "options": ["A) Vishnu", "B) Shiva", "C) Indra", "D) Agni"],
+        "answer": "B) Shiva"
+    },
+    {
+        "question": "Which god is the protector of the world and is often depicted with a discus (Chakra)?",
+        "options": ["A) Vishnu", "B) Brahma", "C) Shiva", "D) Krishna"],
+        "answer": "A) Vishnu"
+    },
+    {
+        "question": "Which god is revered as the god of beginnings and the remover of obstacles?",
+        "options": ["A) Shiva", "B) Brahma", "C) Ganesha", "D) Krishna"],
+        "answer": "C) Ganesha"
+    },
+    {
+        "question": "Which god is depicted with a peacock as his vehicle?",
+        "options": ["A) Vishnu", "B) Shiva", "C) Brahma", "D) Kartikeya"],
+        "answer": "D) Kartikeya"
+    },
+    {
+        "question": "Which god is known for his many incarnations (avatars) in Hindu mythology?",
+        "options": ["A) Vishnu", "B) Brahma", "C) Shiva", "D) Indra"],
+        "answer": "A) Vishnu"
+    },
+    {
+        "question": "Which goddess is often depicted with four arms and riding a lion?",
+        "options": ["A) Saraswati", "B) Durga", "C) Lakshmi", "D) Parvati"],
+        "answer": "B) Durga"
+    },
+    {
+        "question": "Which Hindu god is known for his compassion and teachings in the Bhagavad Gita?",
+        "options": ["A) Vishnu", "B) Krishna", "C) Shiva", "D) Brahma"],
+        "answer": "B) Krishna"
+    },
+    {
+        "question": "Which goddess is the patron of music, arts, and learning?",
+        "options": ["A) Saraswati", "B) Lakshmi", "C) Parvati", "D) Durga"],
+        "answer": "A) Saraswati"
+    },
+    {
+        "question": "Who is the king of gods and the ruler of the heavens in Hinduism?",
+        "options": ["A) Vishnu", "B) Brahma", "C) Shiva", "D) Indra"],
+        "answer": "D) Indra"
+    },
+    {
+        "question": "Which deity is often depicted as a half-man, half-lion form?",
+        "options": ["A) Vishnu", "B) Shiva", "C) Narasimha", "D) Brahma"],
+        "answer": "C) Narasimha"
+    },
+    {
+        "question": "Which god is worshiped as the lord of righteousness?",
+        "options": ["A) Rama", "B) Krishna", "C) Vishnu", "D) Shiva"],
+        "answer": "A) Rama"
+    },
+    {
+        "question": "Who is the god of the wind in Hinduism?",
+        "options": ["A) Vayu", "B) Agni", "C) Surya", "D) Indra"],
+        "answer": "A) Vayu"
+    },
+    {
+        "question": "Which goddess is known for her association with fertility and nurturing?",
+        "options": ["A) Durga", "B) Lakshmi", "C) Parvati", "D) Saraswati"],
+        "answer": "C) Parvati"
+    },
+
+
+    ];
+
+    let score = 0;
+    const userAnswers = {};
+    const container = document.getElementById("question-container");
+
+    // Function to generate a random question
+    function generateQuestion() {
+      const randomIndex = Math.floor(Math.random() * questions.length);
+      const q = questions[randomIndex];
+
+      // Clear previous question if any
+      container.innerHTML = '';
+
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question";
+
+      const questionText = document.createElement("p");
+      questionText.textContent = q.question;
+      questionDiv.appendChild(questionText);
+
+      const ul = document.createElement("ul");
+      ul.className = "options";
+
+      q.options.forEach(option => {
+        const li = document.createElement("li");
+        li.textContent = option;
+        li.setAttribute("onclick", `checkAnswer('${option}', '${q.answer}')`);
+        ul.appendChild(li);
+      });
+
+      questionDiv.appendChild(ul);
+      container.appendChild(questionDiv);
+    }
+
+    // Function to check the answer
+    function checkAnswer(selectedOption, correctAnswer) {
+      if (selectedOption === correctAnswer) {
+        score++;
+        alert("Correct!");
+      } else {
+        alert("Incorrect! The correct answer was: " + correctAnswer);
+      }
+      
+      // Display score
+      const scoreDiv = document.getElementById("score");
+      scoreDiv.textContent = ` Your Score : ${score}`;
+
+      // Generate new question
+      generateQuestion();
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,437 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ramayan Quiz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+   <style>
+    body {
+  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 0;
+background-color: #4682B4  ;
+  background-size: 80% 90%; /* Changed from cover to full width & height */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #000;
+}
+#home-icon {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  padding: 12px 20px; /* bigger size */
+  background-color: transparent;
+  /* border: 2px solid white;  <-- removed */
+  color: white;
+  font-size: 24px; /* bigger icon */
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+#home-icon i {
+  color: black;
+  transition: color 0.3s ease;
+}
+
+#home-icon:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: white;
+  text-decoration: none;
+}
+
+
+#home-icon:hover i {
+  color: black;
+}
+
+/* NEW: Submit button styles */
+#submit-btn {
+  padding: 12px 20px; /* match home icon */
+  font-size: 24px; /* same size */
+  font-weight: bold;
+  background-color: transparent;
+  border: none; /* no border */
+  color: black;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+}
+
+#submit-btn:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: black;
+  text-decoration: none;
+}
+
+
+    #timer {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #f2f2f2;
+      padding: 10px 15px;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    .quiz-navigation {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      width: 300px;
+      background-image: url("quiz background/ramc.jpg"); 
+      background-size: cover;
+      background-repeat: no-repeat;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 5;
+      color: white;
+    }
+
+    .navigation-buttons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 buttons per row */
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.navigation-buttons .button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background-color: transparent;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: color 0.3s, transform 0.2s;
+     color: white; /*change button color*/
+      backdrop-filter: none;
+    }
+
+    .navigation-buttons .button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+      -webkit-text-fill-color: none;
+      background-image: url("file:///C:/Users/KRISHNA/Desktop/quiz/quiz%20background/.jpeg");
+      background-size: cover;
+      background-position: center;
+    }
+	
+
+    .finish {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+      text-align: center;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      margin: 2px 0;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+
+    li:hover {
+      background-color: #e0e0e0;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    .result {
+      font-size: 16px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #finalScore {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #submit-btn {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+	.finish {
+  cursor: pointer;
+  color: white; /* Changed to submit button color */
+  text-decoration: underline;
+  text-align: center;
+}
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+<a id="home-icon" href="dashboard.html" title="Go to Dashboard">
+  <i class="fa fa-home" aria-hidden="true"></i>
+</a>
+
+  <div id="timer">Time Left: 50:00</div>
+
+  <div class="quiz-navigation">
+    <h3 style="text-align:center">QUIZ NAVIGATION</h3>
+    <div class="navigation-buttons" id="navButtons"></div>
+    <div class="finish" onclick="finishQuiz()">Finish attempting...</div>
+  </div>
+
+  <div class="quiz-container">
+    <h1>Ramayan Quiz</h1>
+    <div id="questions-container"></div>
+    <button id="submit-btn" onclick="calculateScore()">Submit</button>
+    <div id="finalScore"></div>
+  </div>
+
+  <audio id="correctSound">
+    <source src="quiz background/correct.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="incorrectSound">
+    <source src="quiz background/incorrect.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+     
+   const questions = [
+      { q: "1. Who is the main hero of the Ramayana?", options: ["Krishna", "Rama", "Shiva", "Arjuna"], answer: "B" },
+      { q: "2. Who is Rama's wife?", options: ["Radha", "Sita", "Draupadi", "Lakshmi"], answer: "B" },
+      { q: "3. What is the name of Rama's loyal brother?", options: ["Karna", "Bharata", "Lakshmana", "Shatrughna"], answer: "C" },
+      { q: "4. Who kidnapped Sita?", options: ["Kumbhakarna", "Surpanakha", "Ravana", "Vibhishana"], answer: "C" },
+      { q: "5. Where was Rama born?", options: ["Mathura", "Ayodhya", "Lanka", "Dwaraka"], answer: "B" },
+      { q: "6. Who is the father of Rama?", options: ["Dasharatha", "Janaka", "Vishwamitra", "Vashistha"], answer: "A" },
+      { q: "7. What was Hanuman’s mother’s name?", options: ["Kaikeyi", "Anjana", "Mandodari", "Sumitra"], answer: "B" },
+      { q: "8. What was the name of the golden deer?", options: ["Maricha", "Subahu", "Jatayu", "Sugriva"], answer: "A" },
+      { q: "9. Who built the bridge to Lanka?", options: ["Lakshmana", "Rama", "Hanuman", "Vanaras"], answer: "D" },
+      { q: "10. Who was Ravana’s brother that supported Rama?", options: ["Kumbhakarna", "Indrajit", "Vibhishana", "Bali"], answer: "C" },
+      { q: "11. What weapon did Rama use to kill Ravana?", options: ["Sword", "Brahmastra", "Bow and arrow", "Chakra"], answer: "B" },
+      { q: "12. What is the name of Ravana's son?", options: ["Kumbhakarna", "Indrajit", "Sugriva", "Angada"], answer: "B" },
+      { q: "13. Who was the king of the monkeys?", options: ["Jambavan", "Sugriva", "Hanuman", "Vali"], answer: "B" },
+      { q: "14. Who was the father of Sita?", options: ["Dasharatha", "Janaka", "Ravana", "Vishwamitra"], answer: "B" },
+      { q: "15. Who was the bird that tried to save Sita?", options: ["Jatayu", "Garuda", "Sampati", "Vishnu"], answer: "A" },
+      { q: "16. Who was Rama's guru during his childhood?", options: ["Valmiki", "Vishwamitra", "Parashurama", "Narada"], answer: "B" },
+      { q: "17. Which demoness tried to marry Rama?", options: ["Surpanakha", "Tataka", "Mandodari", "Anjana"], answer: "A" },
+      { q: "18. What festival celebrates Rama’s return to Ayodhya?", options: ["Holi", "Diwali", "Navratri", "Pongal"], answer: "B" },
+      { q: "19. What is the name of the demoness killed by Rama?", options: ["Surpanakha", "Tataka", "Mandodari", "Kaikeyi"], answer: "B" },
+      { q: "20. Who wrote the Ramayana?", options: ["Vyasa", "Valmiki", "Tulsidas", "Kalidasa"], answer: "B" },
+      { q: "21. How many years did Rama spend in exile?", options: ["10", "12", "14", "16"], answer: "C" },
+      { q: "22. Who was the mother of Bharata?", options: ["Kaikeyi", "Kausalya", "Sumitra", "Mandavi"], answer: "A" },
+      { q: "23. Who gave Rama his bow during Sita’s swayamvar?", options: ["Vishnu", "Janaka", "Vishwamitra", "Shiva"], answer: "D" },
+      { q: "24. Who was Sita abducted by?", options: ["Kumbhakarna", "Ravana", "Vibhishana", "Vali"], answer: "B" },
+      { q: "25. Who burned Lanka with his tail?", options: ["Rama", "Lakshmana", "Hanuman", "Bali"], answer: "C" },
+      { q: "26. Which river did Rama cross during his exile?", options: ["Ganga", "Godavari", "Yamuna", "Sarayu"], answer: "D" },
+      { q: "27. Who was the ruler of Lanka?", options: ["Ravana", "Indrajit", "Bali", "Vibhishana"], answer: "A" },
+      { q: "28. Who cursed Ahalya in Ramayana?", options: ["Indra", "Gautama", "Vashistha", "Narada"], answer: "B" },
+      { q: "29. Who was Rama’s half-brother from Kaikeyi?", options: ["Lakshmana", "Bharata", "Shatrughna", "None"], answer: "B" },
+      { q: "30. What did Sita cross to prove her purity?", options: ["River", "Mountain", "Fire", "Bridge"], answer: "C" },
+      { q: "31. Who killed Vali?", options: ["Sugriva", "Rama", "Lakshmana", "Hanuman"], answer: "B" },
+      { q: "32. What kingdom did Rama rule after returning?", options: ["Lanka", "Ayodhya", "Mithila", "Kishkindha"], answer: "B" },
+      { q: "33. Who advised Ravana to return Sita?", options: ["Mandodari", "Indrajit", "Vibhishana", "Kumbhakarna"], answer: "C" },
+      { q: "34. Who composed Ramcharitmanas?", options: ["Tulsidas", "Valmiki", "Kalidasa", "Kabir"], answer: "A" },
+      { q: "35. What did Hanuman bring from the Himalayas?", options: ["Water", "Fire", "Sanjeevani herb", "Sword"], answer: "C" },
+      { q: "36. What was Sita doing when Ravana abducted her?", options: ["Sleeping", "Collecting flowers", "Cooking", "Praying"], answer: "B" },
+      { q: "37. What was the shape of the golden deer?", options: ["Tiger", "Deer", "Monkey", "Lion"], answer: "B" },
+      { q: "38. Who helped Rama build the bridge to Lanka?", options: ["Vanaras", "Humans", "Birds", "Demons"], answer: "A" },
+      { q: "39. What was Hanuman’s weapon?", options: ["Sword", "Bow", "Mace", "Trident"], answer: "C" },
+      { q: "40. Who is known as the author of the original Ramayana?", options: ["Tulsidas", "Valmiki", "Vyasa", "Kalidasa"], answer: "B" }
+    ];
+    const correctAnswers = {};
+    const userAnswers = {};
+    const container = document.getElementById("questions-container");
+    const navButtonsDiv = document.getElementById("navButtons");
+
+    questions.forEach((q, index) => {
+      const qId = `question${index + 1}`;
+      correctAnswers[qId] = q.answer;
+
+      const btn = document.createElement("div");
+      btn.className = "button";
+      btn.id = `nav-${qId}`;
+      btn.textContent = index + 1;
+      btn.onclick = () => {
+        document.getElementById(qId).scrollIntoView({ behavior: 'smooth' });
+      };
+      navButtonsDiv.appendChild(btn);
+
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question";
+      questionDiv.id = qId;
+
+      const questionText = document.createElement("p");
+      questionText.textContent = q.q;
+      questionDiv.appendChild(questionText);
+
+      const ul = document.createElement("ul");
+      ["A", "B", "C", "D"].forEach((label, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${label}. ${q.options[i]}`;
+        li.setAttribute("onclick", `checkAnswer(this, '${label}', '${qId}')`);
+        ul.appendChild(li);
+      });
+
+      questionDiv.appendChild(ul);
+      questionDiv.innerHTML += `<div class="result" id="result-${qId}"></div>`;
+      container.appendChild(questionDiv);
+    });
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        document.getElementById("correctSound").play();
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+
+    function calculateScore() {
+  let score = 0;
+  for (let key in correctAnswers) {
+    if (userAnswers[key] === true) score++;
+  }
+
+  const total = Object.keys(correctAnswers).length;
+  const finalScoreDiv = document.getElementById("finalScore");
+
+  if (score >= 14) {
+    finalScoreDiv.textContent = `You scored ${score}/${total}. Congratulations! 🎉`;
+    finalScoreDiv.style.color = "green";
+  } else {
+    finalScoreDiv.textContent = `You scored ${score}/${total}. Try again! 😢`;
+    finalScoreDiv.style.color = "red";
+  }
+
+  // Add this part to redirect after 2 seconds
+  setTimeout(() => {
+    window.location.href = "dashboard.html";
+  }, 5000);
+}
+
+    function finishQuiz() {
+      if (confirm("Are you sure you want to submit the quiz?")) {
+        calculateScore();
+      }
+    }
+
+    // Timer logic
+    let totalTime = 50 * 60;
+    const timerDisplay = document.getElementById("timer");
+
+    function updateTimer() {
+      const minutes = Math.floor(totalTime / 60);
+      const seconds = totalTime % 60;
+      timerDisplay.textContent = `Time Left: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      if (totalTime > 0) {
+        totalTime--;
+      } else {
+        clearInterval(timerInterval);
+        calculateScore();
+        alert("Time's up! Your quiz is being submitted.");
+      }
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+	// Your existing questions array and other variables...
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+      const correctSound = document.getElementById("correctSound");
+      const incorrectSound = document.getElementById("incorrectSound");
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        correctSound.play(); // Play correct answer sound
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        incorrectSound.play(); // Play incorrect answer sound
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+
+    // Rest of your existing JavaScript...
+  </script>
+</body>
+</html>

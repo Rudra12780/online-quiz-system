@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Online Quiz Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <style>
+    /* General Reset & Layout */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #F5F5F5;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #00897B;
+      color: #fff;
+      padding: 15px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .profile-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .profile-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .profile-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #fff;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid #ccc;
+    }
+
+    .profile-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #logout-icon {
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      margin-top: 10px;
+      text-align: center;
+      transition: color 0.3s ease;
+    }
+
+    #logout-icon:hover {
+      color: #ff4444;
+    }
+
+    .theme-switch {
+      position: relative;
+      width: 50px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .theme-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      border-radius: 24px;
+      transition: 0.4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+    }
+
+    input:checked + .slider {
+      background-color: #00897B;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .dashboard {
+      padding: 15px;
+      max-width: 900px;
+      margin: auto;
+      flex-grow: 1;
+    }
+
+    .category-card {
+      display: flex;
+      background-color: transperent;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin: 15px 0;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .category-card:hover {
+      background: #e0f2f1;
+    }
+
+    .category-card img {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+    }
+
+    .category-info {
+      padding: 15px;
+      flex-grow: 1;
+    }
+
+    .category-info h4 {
+      margin: 0 0 10px;
+      color: #00897B;
+    }
+
+    .level-buttons button {
+      margin: 4px;
+      padding: 6px 12px;
+      background: #00897B;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .level-buttons button:hover {
+      background: #00796B;
+    }
+
+    .level-buttons {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .category-card {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .category-card img {
+        width: 100%;
+        height: auto;
+      }
+
+      .category-info {
+        text-align: center;
+      }
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .modal-content input[type="file"] {
+      width: 100%;
+      margin: 10px 0;
+      padding: 8px;
+    }
+
+    .modal-content button {
+      background-color: #00897B;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .modal-content button:hover {
+      background-color: #00796B;
+    }
+
+    footer {
+      background-color: #00897B;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: #004d40;
+    }
+
+    .dark-theme {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.dark-theme header {
+  background-color: #00897B; /* Keep original header color */
+  color: white;
+}
+
+.dark-theme .category-card,
+.dark-theme .modal-content {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+
+.dark-theme .slider {
+  background-color: #555;
+}
+
+.dark-theme input:checked + .slider {
+  background-color: #00bfa5;
+}
+
+.dark-theme .category-card:hover {
+  background-color: #2c2c2c;
+}
+#dashboard-title {
+  font-size: 36px;
+  font-weight: 700;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #ffffff;
+  text-shadow:
+    1px 1px 0 #333,
+    2px 2px 0 #222,
+    3px 3px 0 #111,
+    4px 4px 2px rgba(0, 0, 0, 0.4); /* creates depth */
+  letter-spacing: 1px;
+}
+
+
+
+#bg-video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+#bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  display: none;
+}
+
+#video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(245, 245, 245, 0.7); /* Match your light theme bg with opacity */
+  display: none;
+}
+
+.light-theme #bg-video,
+.light-theme #video-overlay {
+  display: block;
+}
+
+/* Update your dark theme styles */
+.dark-theme {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Make sure content is above video */
+header, .dashboard, footer {
+  position: relative;
+  z-index: 1;
+}
+
+  </style>
+</head>
+<body>
+
+<div id="bg-video-container">
+  <video id="bg-video" autoplay muted loop>
+  <source src="quiz background/dbvi.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</div>
+
+  <header>
+    <h1 id="dashboard-title">Welcome to the Online Quiz Portal</h1>
+    <div class="profile-container">
+      <div class="profile-group">
+        <div class="profile-icon" onclick="openModal()">
+          <img id="header-pic" src="https://via.placeholder.com/100" alt="Profile" />
+        </div>
+        <div id="logout-icon" title="Logout" onclick="logout()">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </div>
+      </div>
+      <label class="theme-switch" title="Toggle Theme">
+        <input type="checkbox" id="theme-toggle" />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </header>
+<div class="dashboard">
+    <!-- General Knowledge Category -->
+    <div class="category-card" onclick="showLevels('gk')">
+      <img src="quizimage\gk.jpeg" alt="General Knowledge">
+      <div class="category-info">
+        <h4>General Knowledge</h4>
+        <p>Test your awareness about the world.</p>
+        <div class="level-buttons" id="gk-levels">
+          <a href="gkconfus.html"><button>Confus</button></a>
+          <a href="easygk.html"><button>Easy</button></a>
+          <a href="meduimgk.html"><button>Meduium</button></a>
+          <a href="hardgk.html"><button>Hard</button></a>
+        </div>
+      </div>
+    </div>
+ <!-- Marvel Category -->
+    <div class="category-card" onclick="showLevels('Marvel')">
+      <img src="quizimage\marvel.jpg" alt="Marvel">
+      <div class="category-info">
+        <h4>Marvel</h4>
+        <p>Superhero-based questions from the Marvel universe.</p>
+        <div class="level-buttons" id="Marvel-levels">
+      <a href="marvelconfus.html"><button>Confus</button></a>
+          <a href="easymarvel.html"><button>Easy</button></a>
+          <a href="meduimmarvel.html"><button>Meduium</button></a>
+          <a href="hardmarvel.html"><button>Hard</button></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Intelligence Quotient Category -->
+    <div class="category-card" onclick="showLevels('iq')">
+      <img src="quizimage\iq.jpeg" alt="IQ">
+      <div class="category-info">
+        <h4>Intelligence Quotient</h4>
+        <p>Test your IQ with challenging questions.</p>
+        <div class="level-buttons" id="iq-levels">
+		     <a href="iqconfus.html">
+  <button>confus</button>
+</a>
+              <a href="easyiq.html">
+  <button>easy</button>
+  </a>
+              <a href="meduimiq.html">
+  <button>meduim</button>
+          </a>
+		            <a href="hardiq.html">
+  <button>hard</button>
+</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ramayana Category -->
+    <div class="category-card" onclick="showLevels('ramayana')">
+      <img src="quizimage\ramayan.jpeg" alt="Ramayana">
+      <div class="category-info">
+        <h4>Ramayana</h4>
+        <p>Questions about the epic Ramayana.</p>
+        <div class="level-buttons" id="ramayana-levels">
+		          <a href="ramayan.html">
+  <button>confus</button>
+</a>
+                    <a href="easyramayan.html">
+  <button>easy</button>
+</a>
+                   <a href="meduimramayan.html">
+  <button>meduim</button>
+</a>
+                    <a href="hardramayan.html">
+  <button>hard</button>
+</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mahabharata Category -->
+    <div class="category-card" onclick="showLevels('mahabharata')">
+      <img src="quizimage\mahabharat.jpeg" alt="Mahabharata">
+      <div class="category-info">
+        <h4>Mahabharata</h4>
+        <p>Questions about the epic Mahabharata.</p>
+        <div class="level-buttons" id="mahabharata-levels">
+		          <a href="mahabharat.html">
+  <button>confus</button>
+</a>
+          <a href="easymahabharat.html">
+  <button>easy</button>
+</a>
+          <a href="meduimmahabharat.html">
+  <button>meduim</button>
+</a>
+          <a href="hardmahabharat.html">
+  <button>hard</button>
+</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Environmental Studies Category -->
+    <div class="category-card" onclick="showLevels('envstudies')">
+      <img src="quizimage\es.jpeg" alt="Environmental Studies">
+      <div class="category-info">
+        <h4>Environmental Studies</h4>
+        <p>Learn about the environment with these questions.</p>
+        <div class="level-buttons" id="envstudies-levels">
+				          <a href="es confus.html">
+  <button>confus</button>
+</a>
+		          <a href="easyes.html">
+  <button>easy</button>
+</a>
+		          <a href="meduimes.html">
+  <button>meduim</button>
+</a>
+		          <a href="hardes.html">
+  <button>hard</button>
+</a>
+        </div>
+      </div>
+    </div>
+	
+	<!-- History Category -->
+<div class="category-card" onclick="showLevels('history')">
+  <img src="quizimage\history.jpg" alt="History">
+  <div class="category-info">
+    <h4>History</h4>
+    <p>Explore significant events and civilizations of the past.</p>
+    <div class="level-buttons" id="history-levels">
+			          <a href="history.html">
+  <button>confus</button>
+</a>
+			          <a href="easyhistory.html">
+  <button>easy</button>
+</a>
+			          <a href="meduimhistory.html">
+  <button>meduim</button>
+</a>
+			          <a href="hardhistory.html">
+  <button>hard</button>
+</a>
+    </div>
+  </div>
+</div>
+    <!-- Hindu Temple Category -->
+    <div class="category-card" onclick="showLevels('temple')">
+      <img src="quizimage\hindu.jpg" alt="Hindu Temple">
+      <div class="category-info">
+        <h4>Hindu Temple</h4>
+        <p>Learn about India's sacred temples and architecture.</p>
+        <div class="level-buttons" id="temple-levels">
+          <a href="hindu.html"><button>Confus</button></a>
+          <a href="easyhindu.html"><button>Easy</button></a>
+          <a href="meduimhindu.html"><button>Meduium</button></a>
+          <a href="hardhindu.html"><button>Hard</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Profile Modal -->
+  <div id="profileModal" class="modal">
+    <div class="modal-content">
+      <h3>Edit Profile</h3>
+      <input type="file" id="new-pic" accept="image/*">
+      <button onclick="saveProfile()">Save</button>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div id="profileModal" class="modal">
+    <div class="modal-content">
+      <h3>Edit Profile Picture</h3>
+      <input type="file" id="new-pic" accept="image/*" />
+      <button onclick="saveProfile()">Save</button>
+    </div>
+  </div>
+
+  <footer>
+    <a href="rate.php">Rate Us</a>
+    <a href="about.html">About Us</a>
+	 <a href="genatr.html">Question generater</a>
+  </footer>
+
+  <script>
+  // Theme toggle with video background control
+  document.getElementById("theme-toggle").addEventListener("change", function() {
+    if (this.checked) {
+      document.body.classList.add("dark-theme");
+      document.body.classList.remove("light-theme");
+      if (document.getElementById("bg-video")) {
+        document.getElementById("bg-video").pause();
+      }
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove("dark-theme");
+      document.body.classList.add("light-theme");
+      if (document.getElementById("bg-video")) {
+        document.getElementById("bg-video").play();
+      }
+      localStorage.setItem("theme", "light");
+    }
+  });
+
+  // Quiz level display function
+  function showLevels(categoryId) {
+    document.querySelectorAll(".level-buttons").forEach(el => el.style.display = "none");
+    const target = document.getElementById(`${categoryId}-levels`);
+    if (target) target.style.display = "block";
+  }
+
+  // Profile modal functions
+  function openModal() {
+    const savedPic = localStorage.getItem("profilePic");
+    document.getElementById("profileModal").style.display = "block";
+    document.getElementById("new-pic").value = "";
+    document.getElementById("header-pic").src = savedPic || "https://via.placeholder.com/100";
+  }
+
+  function closeModal() {
+    document.getElementById("profileModal").style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target === document.getElementById("profileModal")) {
+      closeModal();
+    }
+  };
+
+  function saveProfile() {
+    const file = document.getElementById("new-pic").files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imageData = e.target.result;
+        localStorage.setItem("profilePic", imageData);
+        document.getElementById("header-pic").src = imageData;
+      };
+      reader.readAsDataURL(file);
+    }
+    closeModal();
+  }
+
+  // Logout function
+  function logout() {
+    localStorage.clear();
+    window.location.href = "signup.php";
+  }
+
+  // On page load initialization
+  window.onload = () => {
+    const savedPic = localStorage.getItem("profilePic");
+    const savedTheme = localStorage.getItem("theme");
+    const bgVideo = document.getElementById("bg-video");
+
+    if (savedPic) document.getElementById("header-pic").src = savedPic;
+    
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark-theme");
+      document.getElementById("theme-toggle").checked = true;
+      if (bgVideo) bgVideo.pause();
+    } else {
+      document.body.classList.add("light-theme");
+      if (bgVideo) bgVideo.play();
+    }
+  };
+</script>
+</head>
+</html>

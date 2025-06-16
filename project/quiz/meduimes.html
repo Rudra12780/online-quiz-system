@@ -1,0 +1,426 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Environment Studies Quiz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+   <style>
+    body {
+  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 0;
+  background-color: #D2B48C ;
+  background-size: 100% 100%; /* Changed from cover to full width & height */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #000;
+}
+#home-icon {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  padding: 12px 20px; /* bigger size */
+  background-color: transparent;
+  /* border: 2px solid white;  <-- removed */
+  color: white;
+  font-size: 24px; /* bigger icon */
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+#home-icon i {
+  color: black;
+  transition: color 0.3s ease;
+}
+
+#home-icon:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: white;
+  text-decoration: none;
+}
+
+
+#home-icon:hover i {
+  color: black;
+}
+
+/* NEW: Submit button styles */
+#submit-btn {
+  padding: 12px 20px; /* match home icon */
+  font-size: 24px; /* same size */
+  font-weight: bold;
+  background-color: transparent;
+  border: none; /* no border */
+  color: black;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+}
+
+#submit-btn:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: black;
+  text-decoration: none;
+}
+
+
+    #timer {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #f2f2f2;
+      padding: 10px 15px;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    .quiz-navigation {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      width: 300px;
+      background-image: url("quiz background/esm.jpg"); 
+      background-size: cover;
+      background-repeat: no-repeat;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 5;
+      color: white;
+    }
+
+    .navigation-buttons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 buttons per row */
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.navigation-buttons .button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background-color: transparent;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: color 0.3s, transform 0.2s;
+     color: #faf7f7; /*change button color*/
+      backdrop-filter: none;
+    }
+
+    .navigation-buttons .button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+      -webkit-text-fill-color: none;
+      background-image: url("file:///C:/Users/KRISHNA/Desktop/quiz/quiz%20background/.jpeg");
+      background-size: cover;
+      background-position: center;
+    }
+	
+
+    .finish {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+      text-align: center;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      margin: 2px 0;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+
+    li:hover {
+      background-color: #e0e0e0;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    .result {
+      font-size: 16px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #finalScore {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #submit-btn {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+	.finish {
+  cursor: pointer;
+  color: white; /* Changed to submit button color */
+  text-decoration: underline;
+  text-align: center;
+}
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+<a id="home-icon" href="dashboard.html" title="Go to Dashboard">
+  <i class="fa fa-home" aria-hidden="true"></i>
+</a>
+  <div id="timer">Time Left: 50:00</div>
+
+  <div class="quiz-navigation">
+    <h3 style="text-align:center">QUIZ NAVIGATION</h3>
+    <div class="navigation-buttons" id="navButtons"></div>
+    <div class="finish" onclick="finishQuiz()">Finish attempting...</div>
+  </div>
+
+  <div class="quiz-container">
+    <h1>Environment Studies Quiz</h1>
+    <div id="questions-container"></div>
+    <button id="submit-btn" onclick="calculateScore()">Submit</button>
+    <div id="finalScore"></div>
+  </div>
+
+  <audio id="correctSound">
+    <source src="quiz background/correct.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="incorrectSound">
+    <source src="quiz background/incorrect.mp3" type="audio/mpeg">
+  </audio>
+  <script>
+      const questions = [
+  { q: "1. What is the most significant cause of climate change?", options: ["Deforestation", "Greenhouse gases", "Ocean pollution", "Industrial waste"], answer: "B" },
+  { q: "2. Which energy source is considered the cleanest?", options: ["Natural gas", "Wind", "Coal", "Nuclear"], answer: "B" },
+  { q: "3. How can reducing meat consumption help the environment?", options: ["Decreases water usage", "Reduces greenhouse gas emissions", "Lowers deforestation", "All of the above"], answer: "D" },
+  { q: "4. What is the most effective way to reduce plastic pollution?", options: ["Recycling", "Reducing single-use plastics", "Incineration", "Composting"], answer: "B" },
+  { q: "5. What gas is primarily responsible for global warming?", options: ["Nitrogen", "Carbon dioxide", "Oxygen", "Helium"], answer: "B" },
+  { q: "6. Which of these is a renewable resource?", options: ["Coal", "Oil", "Solar energy", "Natural gas"], answer: "C" },
+  { q: "7. What does 'biodiversity' refer to?", options: ["Number of trees", "Variety of life in a habitat", "Amount of rainfall", "Air quality level"], answer: "B" },
+  { q: "8. Which practice contributes to soil erosion?", options: ["Crop rotation", "Afforestation", "Deforestation", "Mulching"], answer: "C" },
+  { q: "9. What is the main benefit of composting?", options: ["Reduces greenhouse gases", "Increases landfill usage", "Kills pests", "Emits toxic gases"], answer: "A" },
+  { q: "10. Which layer of the Earth’s atmosphere contains the ozone layer?", options: ["Troposphere", "Stratosphere", "Mesosphere", "Thermosphere"], answer: "B" },
+  { q: "11. Which species is considered an indicator of a healthy ecosystem?", options: ["Mosquitoes", "Frogs", "Cockroaches", "Flies"], answer: "B" },
+  { q: "12. What is the main goal of sustainable development?", options: ["Economic growth", "Meeting present needs without harming future generations", "Rapid urbanization", "Technological progress"], answer: "B" },
+  { q: "13. What human activity most depletes freshwater supplies?", options: ["Domestic use", "Agriculture", "Industry", "Transportation"], answer: "B" },
+  { q: "14. Which of these materials is non-biodegradable?", options: ["Paper", "Banana peel", "Plastic bottle", "Cotton cloth"], answer: "C" },
+  { q: "15. What is the main cause of acid rain?", options: ["Excess oxygen", "Sulfur dioxide and nitrogen oxides", "Carbon monoxide", "Methane"], answer: "B" },
+  { q: "16. Which action best helps conserve biodiversity?", options: ["Urban expansion", "Hunting", "Creating national parks", "Logging"], answer: "C" },
+  { q: "17. What term describes species at risk of extinction?", options: ["Endemic", "Exotic", "Endangered", "Invasive"], answer: "C" },
+  { q: "18. Which process converts waste into reusable material?", options: ["Landfilling", "Composting", "Burning", "Recycling"], answer: "D" },
+  { q: "19. What does the 3 R's stand for in waste management?", options: ["Reduce, Reuse, Recycle", "Remove, Replace, Reuse", "Recycle, Replace, Recover", "Rebuild, Reduce, Retain"], answer: "A" },
+  { q: "20. What is the major environmental concern with plastic bags?", options: ["Too costly", "Biodegradable", "Takes years to decompose", "Reusable"], answer: "C" },
+  { q: "21. What causes eutrophication in water bodies?", options: ["Acid rain", "Excess nutrients", "Heavy metals", "Low temperature"], answer: "B" },
+  { q: "22. Which method helps in water conservation?", options: ["Flood irrigation", "Drip irrigation", "Overhead watering", "Water logging"], answer: "B" },
+  { q: "23. What is the main purpose of the Kyoto Protocol?", options: ["Promote deforestation", "Reduce greenhouse gas emissions", "Increase industrialization", "Ban fishing"], answer: "B" },
+  { q: "24. Which energy source does not emit carbon dioxide during use?", options: ["Diesel", "Coal", "Hydroelectric", "Natural gas"], answer: "C" },
+  { q: "25. What does deforestation mainly lead to?", options: ["Soil conservation", "Increased oxygen", "Soil erosion", "Biodiversity growth"], answer: "C" },
+  { q: "26. Which global organization addresses climate change?", options: ["WTO", "UNEP", "WHO", "NATO"], answer: "B" },
+  { q: "27. What is the largest source of marine pollution?", options: ["Oil spills", "Sewage and land runoff", "Ship accidents", "Nuclear waste"], answer: "B" },
+  { q: "28. What is a carbon footprint?", options: ["Number of cars you own", "The amount of CO2 emitted by activities", "Type of shoes worn", "Carbon left in food"], answer: "B" },
+  { q: "29. Which animal is most affected by melting Arctic ice?", options: ["Lions", "Elephants", "Polar bears", "Kangaroos"], answer: "C" },
+  { q: "30. Which of these best defines an ecosystem?", options: ["A plant type", "A group of similar animals", "Interaction of living and non-living things", "Only aquatic animals"], answer: "C" },
+  { q: "31. Which method is most sustainable for energy production?", options: ["Burning coal", "Nuclear fission", "Wind turbines", "Diesel engines"], answer: "C" },
+  { q: "32. What is greenwashing?", options: ["Eco-friendly packaging", "Misleading claims about environmental practices", "A type of algae", "Cleaning plants"], answer: "B" },
+  { q: "33. Which greenhouse gas is released by livestock?", options: ["Methane", "Carbon monoxide", "Ozone", "Hydrogen"], answer: "A" },
+  { q: "34. What is the main component of smog?", options: ["Water vapor", "Dust", "Ozone", "Sulfur"], answer: "C" },
+  { q: "35. What type of farming is environmentally friendly?", options: ["Monoculture", "Organic farming", "Slash and burn", "Overgrazing"], answer: "B" },
+  { q: "36. What can individuals do to fight climate change?", options: ["Use plastic bags", "Drive more", "Use renewable energy", "Waste water"], answer: "C" },
+  { q: "37. Which of the following contributes to urban heat islands?", options: ["Forest cover", "Concrete surfaces", "Open fields", "Bodies of water"], answer: "B" },
+  { q: "38. What does ‘zero waste’ aim to do?", options: ["Burn all trash", "Eliminate waste generation", "Use more resources", "Create bigger landfills"], answer: "B" },
+  { q: "39. Which country leads in solar power production?", options: ["USA", "India", "China", "Germany"], answer: "C" },
+  { q: "40. What is the goal of reforestation?", options: ["Cut trees", "Build roads", "Restore forests", "Expand cities"], answer: "C" }
+];
+
+    const correctAnswers = {};
+    const userAnswers = {};
+    const container = document.getElementById("questions-container");
+    const navButtonsDiv = document.getElementById("navButtons");
+
+    questions.forEach((q, index) => {
+      const qId = `question${index + 1}`;
+      correctAnswers[qId] = q.answer;
+
+      const btn = document.createElement("div");
+      btn.className = "button";
+      btn.id = `nav-${qId}`;
+      btn.textContent = index + 1;
+      btn.onclick = () => {
+        document.getElementById(qId).scrollIntoView({ behavior: 'smooth' });
+      };
+      navButtonsDiv.appendChild(btn);
+
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question";
+      questionDiv.id = qId;
+
+      const questionText = document.createElement("p");
+      questionText.textContent = q.q;
+      questionDiv.appendChild(questionText);
+
+      const ul = document.createElement("ul");
+      ["A", "B", "C", "D"].forEach((label, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${label}. ${q.options[i]}`;
+        li.setAttribute("onclick", `checkAnswer(this, '${label}', '${qId}')`);
+        ul.appendChild(li);
+      });
+
+      questionDiv.appendChild(ul);
+      questionDiv.innerHTML += `<div class="result" id="result-${qId}"></div>`;
+      container.appendChild(questionDiv);
+    });
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        document.getElementById("correctSound").play();
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+
+    function calculateScore() {
+  let score = 0;
+  for (let key in correctAnswers) {
+    if (userAnswers[key] === true) score++;
+  }
+
+  const total = Object.keys(correctAnswers).length;
+  const finalScoreDiv = document.getElementById("finalScore");
+
+  if (score >= 14) {
+    finalScoreDiv.textContent = `You scored ${score}/${total}. Congratulations! 🎉`;
+    finalScoreDiv.style.color = "green";
+  } else {
+    finalScoreDiv.textContent = `You scored ${score}/${total}. Try again! 😢`;
+    finalScoreDiv.style.color = "red";
+  }
+
+  // Add this part to redirect after 2 seconds
+  setTimeout(() => {
+    window.location.href = "dashboard.html";
+  }, 5000);
+}
+    // Timer logic
+    let totalTime = 50 * 60;
+    const timerDisplay = document.getElementById("timer");
+
+    function updateTimer() {
+      const minutes = Math.floor(totalTime / 60);
+      const seconds = totalTime % 60;
+      timerDisplay.textContent = `Time Left: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      if (totalTime > 0) {
+        totalTime--;
+      } else {
+        clearInterval(timerInterval);
+        calculateScore();
+        alert("Time's up! Your quiz is being submitted.");
+      }
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+	// Your existing questions array and other variables...
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+      const correctSound = document.getElementById("correctSound");
+      const incorrectSound = document.getElementById("incorrectSound");
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        correctSound.play(); // Play correct answer sound
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        incorrectSound.play(); // Play incorrect answer sound
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+  </script>
+</body>
+</html>

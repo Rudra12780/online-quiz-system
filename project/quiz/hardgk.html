@@ -1,0 +1,434 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>General Knowledge Quiz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 0;
+  background-color: #F5F0E6     ;
+  background-size: 100% 100%; /* Changed from cover to full width & height */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #000;
+}
+#home-icon {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  padding: 12px 20px; /* bigger size */
+  background-color: transparent;
+  /* border: 2px solid white;  <-- removed */
+  color: white;
+  font-size: 24px; /* bigger icon */
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+#home-icon i {
+  color: black;
+  transition: color 0.3s ease;
+}
+
+#home-icon:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: white;
+  text-decoration: none;
+}
+
+
+#home-icon:hover i {
+  color: black;
+}
+
+/* NEW: Submit button styles */
+#submit-btn {
+  padding: 12px 20px; /* match home icon */
+  font-size: 24px; /* same size */
+  font-weight: bold;
+  background-color: transparent;
+  border: none; /* no border */
+  color: black;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease, color 0.3s ease;
+}
+
+#submit-btn:hover {
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.8); /* black glow */
+  color: black;
+  text-decoration: none;
+}
+
+
+    #timer {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: #f2f2f2;
+      padding: 10px 15px;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    .quiz-navigation {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      width: 300px;
+       background-image: url("quiz background/gkh.jpg"); 
+      background-size: cover;
+      background-repeat: no-repeat;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      z-index: 5;
+      color: #000;
+    }
+
+    .navigation-buttons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 buttons per row */
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.navigation-buttons .button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background-color: transparent;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: color 0.3s, transform 0.2s;
+     color: #faf7f7; /*change button color*/
+      backdrop-filter: none;
+    }
+
+    .navigation-buttons .button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+      -webkit-text-fill-color: none;
+      background-size: cover;
+      background-position: center;
+    }
+	
+
+    .finish {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+      text-align: center;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      margin: 2px 0;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+
+    li:hover {
+      background-color: #e0e0e0;
+    }
+
+    .correct {
+      background-color: green;
+      color: white;
+    }
+
+    .incorrect {
+      background-color: red;
+      color: white;
+    }
+
+    .result {
+      font-size: 16px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #finalScore {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #submit-btn {
+      display: block;
+      margin: 20px auto 0 auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+	.finish {
+  cursor: pointer;
+  color: white; /* Changed to submit button color */
+  text-decoration: underline;
+  text-align: center;
+}
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+<a id="home-icon" href="dashboard.html" title="Go to Dashboard">
+  <i class="fa fa-home" aria-hidden="true"></i>
+</a>
+  <div id="timer">Time Left: 50:00</div>
+
+  <div class="quiz-navigation">
+    <h3 style="text-align:center">QUIZ NAVIGATION</h3>
+    <div class="navigation-buttons" id="navButtons"></div>
+    <div class="finish" onclick="finishQuiz()">Finish attempting...</div>
+  </div>
+
+  <div class="quiz-container">
+    <h1>General Knowledge Quiz</h1>
+    <div id="questions-container"></div>
+    <button id="submit-btn" onclick="calculateScore()">Submit</button>
+    <div id="finalScore"></div>
+  </div>
+
+  <audio id="correctSound">
+    <source src="quiz background/correct.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="incorrectSound">
+    <source src="quiz background/incorrect.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const questions = [
+      { q: "1. What is the smallest country in the world by area?", options: ["Monaco", "Vatican City", "San Marino", "Liechtenstein"], answer: "B" },
+      { q: "2. Which gas is most abundant in Earth's atmosphere?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"], answer: "C" },
+      { q: "3. Who wrote 'The Origin of Species'?", options: ["Isaac Newton", "Albert Einstein", "Charles Darwin", "Galileo Galilei"], answer: "C" },
+      { q: "4. Which city has the busiest airport in the world by passenger traffic?", options: ["London", "Atlanta", "Dubai", "Beijing"], answer: "B" },
+      { q: "5. What is the currency of South Korea?", options: ["Yen", "Won", "Ringgit", "Baht"], answer: "B" },
+      { q: "6. Who painted the ceiling of the Sistine Chapel?", options: ["Raphael", "Leonardo da Vinci", "Michelangelo", "Donatello"], answer: "C" },
+      { q: "7. What is the capital of Kazakhstan?", options: ["Astana", "Almaty", "Tashkent", "Bishkek"], answer: "A" },
+      { q: "8. What is the chemical formula of table salt?", options: ["NaCl", "KCl", "NaCO3", "CaCl2"], answer: "A" },
+      { q: "9. Which country invented paper?", options: ["India", "Greece", "China", "Egypt"], answer: "C" },
+      { q: "10. Which planet has the most moons?", options: ["Saturn", "Jupiter", "Neptune", "Mars"], answer: "A" },
+      { q: "11. What year did World War I begin?", options: ["1912", "1914", "1916", "1918"], answer: "B" },
+      { q: "12. Who is the author of '1984'?", options: ["Aldous Huxley", "Ray Bradbury", "George Orwell", "Jules Verne"], answer: "C" },
+      { q: "13. What is the longest river in the world?", options: ["Amazon", "Yangtze", "Nile", "Mississippi"], answer: "C" },
+      { q: "14. What element does 'O' represent on the periodic table?", options: ["Oxygen", "Osmium", "Oxide", "Organium"], answer: "A" },
+      { q: "15. What language has the most native speakers?", options: ["English", "Mandarin", "Hindi", "Spanish"], answer: "B" },
+      { q: "16. What is the hardest natural substance on Earth?", options: ["Iron", "Diamond", "Quartz", "Granite"], answer: "B" },
+      { q: "17. Who invented the telephone?", options: ["Thomas Edison", "Alexander Graham Bell", "Nikola Tesla", "Marconi"], answer: "B" },
+      { q: "18. What is the capital of Canada?", options: ["Toronto", "Ottawa", "Vancouver", "Montreal"], answer: "B" },
+      { q: "19. Which part of the plant conducts photosynthesis?", options: ["Stem", "Root", "Leaf", "Flower"], answer: "C" },
+      { q: "20. What metal is liquid at room temperature?", options: ["Iron", "Mercury", "Aluminum", "Tin"], answer: "B" },
+      { q: "21. Who was the first woman in space?", options: ["Valentina Tereshkova", "Sally Ride", "Kalpana Chawla", "Mae Jemison"], answer: "A" },
+      { q: "22. What is the longest bone in the human body?", options: ["Femur", "Tibia", "Humerus", "Skull"], answer: "A" },
+      { q: "23. Which is the largest ocean?", options: ["Atlantic", "Pacific", "Indian", "Arctic"], answer: "B" },
+      { q: "24. What is the largest desert in the world?", options: ["Sahara", "Gobi", "Arctic", "Antarctica"], answer: "D" },
+      { q: "25. Which scientist proposed the three laws of motion?", options: ["Einstein", "Galileo", "Newton", "Kepler"], answer: "C" },
+      { q: "26. Who discovered penicillin?", options: ["Alexander Fleming", "Louis Pasteur", "Marie Curie", "Gregor Mendel"], answer: "A" },
+      { q: "27. Which planet has the strongest gravity?", options: ["Jupiter", "Saturn", "Earth", "Neptune"], answer: "A" },
+      { q: "28. Who was the first president of the United States?", options: ["Thomas Jefferson", "John Adams", "Abraham Lincoln", "George Washington"], answer: "D" },
+      { q: "29. Which Indian mathematician invented zero?", options: ["Aryabhata", "Bhaskara I", "Brahmagupta", "Ramanujan"], answer: "C" },
+      { q: "30. What is the powerhouse of the cell?", options: ["Ribosome", "Nucleus", "Mitochondria", "Chloroplast"], answer: "C" },
+      { q: "31. Which country is known as the Land of the Rising Sun?", options: ["China", "Japan", "Thailand", "Philippines"], answer: "B" },
+      { q: "32. What is the tallest mountain in the world?", options: ["K2", "Everest", "Kilimanjaro", "Makalu"], answer: "B" },
+      { q: "33. What does DNA stand for?", options: ["Dynamic Nuclear Acid", "Deoxyribonucleic Acid", "Deoxynucleic Acid", "Dioxyribonucleic Acid"], answer: "B" },
+      { q: "34. What year did the Titanic sink?", options: ["1910", "1912", "1914", "1916"], answer: "B" },
+      { q: "35. Which instrument measures earthquakes?", options: ["Telescope", "Altimeter", "Seismograph", "Hygrometer"], answer: "C" },
+      { q: "36. Which vitamin is produced when a person is exposed to sunlight?", options: ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin K"], answer: "C" },
+      { q: "37. Which continent has the most countries?", options: ["Africa", "Asia", "Europe", "South America"], answer: "A" },
+      { q: "38. Who wrote 'The Divine Comedy'?", options: ["Homer", "Virgil", "Dante Alighieri", "Plato"], answer: "C" },
+      { q: "39. What is the main ingredient in traditional Japanese miso soup?", options: ["Seaweed", "Rice", "Soybeans", "Fish"], answer: "C" },
+      { q: "40. What is the SI unit of force?", options: ["Pascal", "Joule", "Newton", "Watt"], answer: "C" }
+    ];
+    const correctAnswers = {};
+    const userAnswers = {};
+    const container = document.getElementById("questions-container");
+    const navButtonsDiv = document.getElementById("navButtons");
+
+    questions.forEach((q, index) => {
+      const qId = `question${index + 1}`;
+      correctAnswers[qId] = q.answer;
+
+      const btn = document.createElement("div");
+      btn.className = "button";
+      btn.id = `nav-${qId}`;
+      btn.textContent = index + 1;
+      btn.onclick = () => {
+        document.getElementById(qId).scrollIntoView({ behavior: 'smooth' });
+      };
+      navButtonsDiv.appendChild(btn);
+
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question";
+      questionDiv.id = qId;
+
+      const questionText = document.createElement("p");
+      questionText.textContent = q.q;
+      questionDiv.appendChild(questionText);
+
+      const ul = document.createElement("ul");
+      ["A", "B", "C", "D"].forEach((label, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${label}. ${q.options[i]}`;
+        li.setAttribute("onclick", `checkAnswer(this, '${label}', '${qId}')`);
+        ul.appendChild(li);
+      });
+
+      questionDiv.appendChild(ul);
+      questionDiv.innerHTML += `<div class="result" id="result-${qId}"></div>`;
+      container.appendChild(questionDiv);
+    });
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        document.getElementById("correctSound").play();
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+
+    function calculateScore() {
+  let score = 0;
+  for (let key in correctAnswers) {
+    if (userAnswers[key] === true) score++;
+  }
+
+  const total = Object.keys(correctAnswers).length;
+  const finalScoreDiv = document.getElementById("finalScore");
+
+  if (score >= 14) {
+    finalScoreDiv.textContent = `You scored ${score}/${total}. Congratulations! 🎉`;
+    finalScoreDiv.style.color = "green";
+  } else {
+    finalScoreDiv.textContent = `You scored ${score}/${total}. Try again! 😢`;
+    finalScoreDiv.style.color = "red";
+  }
+
+  // Add this part to redirect after 2 seconds
+  setTimeout(() => {
+    window.location.href = "dashboard.html";
+  }, 5000);
+}
+
+    function finishQuiz() {
+      if (confirm("Are you sure you want to submit the quiz?")) {
+        calculateScore();
+      }
+    }
+
+    // Timer logic
+    let totalTime = 50 * 60;
+    const timerDisplay = document.getElementById("timer");
+
+    function updateTimer() {
+      const minutes = Math.floor(totalTime / 60);
+      const seconds = totalTime % 60;
+      timerDisplay.textContent = `Time Left: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      if (totalTime > 0) {
+        totalTime--;
+      } else {
+        clearInterval(timerInterval);
+        calculateScore();
+        alert("Time's up! Your quiz is being submitted.");
+      }
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+	// Your existing questions array and other variables...
+
+    function checkAnswer(selectedOption, answer, questionId) {
+      const correctAnswer = correctAnswers[questionId];
+      const resultDiv = document.getElementById(`result-${questionId}`);
+      const correctSound = document.getElementById("correctSound");
+      const incorrectSound = document.getElementById("incorrectSound");
+
+      if (answer === correctAnswer) {
+        selectedOption.classList.add("correct");
+        resultDiv.textContent = "Correct!";
+        correctSound.play(); // Play correct answer sound
+        userAnswers[questionId] = true;
+      } else {
+        selectedOption.classList.add("incorrect");
+        resultDiv.textContent = `Incorrect! The correct answer is ${correctAnswer}.`;
+        incorrectSound.play(); // Play incorrect answer sound
+        userAnswers[questionId] = false;
+      }
+
+      const options = document.querySelector(`#${questionId} ul`).children;
+      for (let i = 0; i < options.length; i++) {
+        options[i].onclick = null;
+      }
+
+      // Make nav button gray to mark it as attempted
+      document.getElementById(`nav-${questionId}`).style.backgroundColor = "#ccc";
+    }
+
+    // Rest of your existing JavaScript...
+  </script>
+</body>
+</html>
